@@ -26,8 +26,6 @@ def csv_to_rdf(csv_file, main_graph, PRED, TYPE, namespaces):
     for _, row in df.iterrows():
         entity_uri = URIRef(NS[f"{row.iloc[0]}"])  # Use first column as subject
 
-        main_graph.add((entity_uri, RDF.type, entity_type))
-
         for col in df.columns[1:]:
             value = row[col]
 
@@ -75,8 +73,8 @@ for file in csv_files:
     csv_to_rdf(file, main_graph=main_graph, PRED=PRED, TYPE=TYPE, namespaces=namespaces)
 
 # Save the combined RDF file
-os.makedirs("output", exist_ok=True)
-output_file = "output/data.n3"
+os.makedirs("semantic_data", exist_ok=True)
+output_file = "semantic_data/f1_data.n3"
 main_graph.serialize(destination=output_file, format="n3")
 
 print(f"All RDF data combined into {output_file}")

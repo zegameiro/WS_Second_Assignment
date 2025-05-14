@@ -1,0 +1,29 @@
+@prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <"http://www.w3.org/TR/owl-features#"> .
+
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pred: <http://pitstop.org/pred/> .
+
+@prefix ps: <http://pitstop.org/> .
+
+@prefix circuit: <http://pitstop.org/circuit/> .
+@prefix constructor: <http://pitstop.org/constructor/> .
+@prefix constructor_result: <http://pitstop.org/constructor_result/> .
+@prefix constructor_standing: <http://pitstop.org/constructor_standing/> .
+@prefix driver: <http://pitstop.org/driver/> .
+@prefix driver_standing: <http://pitstop.org/driver_standing/> .
+@prefix qualifying: <http://pitstop.org/qualifying/> .
+@prefix race: <http://pitstop.org/race/> .
+@prefix result: <http://pitstop.org/result/> .
+@prefix season: <http://pitstop.org/season/> .
+@prefix sprint_result: <http://pitstop.org/sprint_result/> .
+@prefix status: <http://pitstop.org/status/> . 
+
+race:Race rdf:type owl:Class .
+circuit:Circuit rdf:type owl:Class .
+
+pred:circuitId rdf:type owl:ObjectProperty ;
+    rdfs:domain race:Race ;
+    rdfs:range circuit:Circuit ;
+    rdfs:comment "Circuit of a race" .
