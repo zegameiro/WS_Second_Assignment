@@ -10,7 +10,7 @@
 
 ps:ontology a owl:Ontology ;
     owl:versionInfo "1.0" ;
-    rdfs:label "PitStop - ontology for Formula 1 Data" ;
+    rdfs:label "PitStop ontology for Formula 1 Data" ;
     rdfs:comment "Ontology for modeling Formula 1 racing data including drivers, races, results, constructors, and circuits." ;
     rdfs:seeAlso <https://www.formula1.com> .
 
@@ -77,8 +77,99 @@ pred:alt rdf:type owl:DatatypeProperty ;
 
 ############################# CONSTRUCTOR PROPERTIES #############################
 
-pred:participatedIn rdf:type owl:ObjectProperty ;
-    rdfs:domain ps:C
+pred:constructorRef rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Constructor ;
+    rdfs:range xsd:string ;
+    rdfs:label "Constructor Reference" ;
+    rdfs:comment "Human-readable identifier/reference to a constructor" .
+
+############################# DRIVER PROPERTIES #############################
+
+pred:driverRef rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Driver ;
+    rdfs:range xsd:string ;
+    rdfs:label "Driver Reference" ;
+    rdfs:comment "Human-readable identifier/reference to a driver" .
+
+pred:code rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Driver ;
+    rdfs:range xsd:string ;
+    rdfs:label "Driver Code" ;
+    rdfs:comment "Code that identifies a driver in an event" .
+
+pred:forename rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Driver ;
+    rdfs:range xsd:string ;
+    rdfs:label "Driver Forename" ;
+    rdfs:comment "First name of a Driver" .
+
+pred:surname rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Driver ;
+    rdfs:range xsd:string ;
+    rdfs:label "Driver Surname" ;
+    rdfs:comment "Second name of a Driver" .
+
+pred:dob rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Driver ;
+    rdfs:range xsd:string ;
+    rdfs:label "Driver DOB" ;
+    rdfs:comment "Date of Birth for a Driver" .
+
+
+############################# QUALIFYING PROPERTIES #############################
+
+pred:qt rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Qualifying ;
+    rdfs:range xsd:string ;
+    rdfs:label "Qualifying Time" ;
+    rdfs:comment "Qualifying time for a phase" .
+
+pred:q1 rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Qualifying ;
+    rdfs:range xsd:string ;
+    rdfs:label "Qualifying time 1" ;
+    rdfs:comment "Qualifying time for phase 1" ;
+    rdfs:subPropertyOf pred:qt .
+
+pred:q2 rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Qualifying ;
+    rdfs:range xsd:string ;
+    rdfs:label "Qualifying time 2" ;
+    rdfs:comment "Qualifying time for phase 2" ;
+    rdfs:subPropertyOf pred:qt .
+
+pred:q3 rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Qualifying ;
+    rdfs:range xsd:string ;
+    rdfs:label "Qualifying time 3" ;
+    rdfs:comment "Qualifying time for phase 3" ;
+    rdfs:subPropertyOf pred:qt .
+
+############################# RACE PROPERTIES #############################
+
+pred:year rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Race ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Race Year" ;
+    rdfs:comment "Year when the race occurred" .
+
+pred:round rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Race ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Race Round" ;
+    rdfs:comment "Round of a Race" .
+
+pred:date rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Race ;
+    rdfs:range xsd:string ;
+    rdfs:label "Race Date" ;
+    rdfs:comment "Date of a Race with the format yyyy-mm-dd" .
+
+pred:time rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Race ;
+    rdfs:range xsd:string ;
+    rdfs:label "Race Duration" ;
+    rdfs:comment "How long did the race took to finish" .
 
 ############################# SHARED PROPERTIES #############################
 
@@ -165,7 +256,7 @@ pred:position rdfs:domain ps:SprintResult .
 pred:positionText rdf:type owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
     rdfs:label "Position Text" ;
-    rdfs:comment "Human.readable version of pred:position" .
+    rdfs:comment "Human-readable version of pred:position" .
 
 pred:positionText rdfs:domain ps:ConstructorStanding .
 pred:positionText rdfs:domain ps:DriverStanding .
@@ -180,6 +271,34 @@ pred:numberOfWins rdf:type owl:DatatypeProperty ;
 
 pred:numberOfWins rdfs:domain ps:ConstructorStanding .
 pred:numberOfWins rdfs:domain ps:DriverStanding .
+
+
+pred:hasDriver rdf:type owl:ObjectProperty ;
+    rdfs:range ps:Driver ;
+    rdfs:label "Driver reference" ;
+    rdfs:comment "Reference to a driver that participated in an event" .
+
+pred:hasDriver rdfs:domain ps:DriverStanding .
+pred:hasDriver rdfs:domain ps:Qualifying .
+pred:hasDriver rdfs:domain ps:Result .
+pred:hasDriver rdfs:domain ps:SprintResult .
+
+pred:nationality rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Nationality" ;
+    rdfs:comment "Nationality of an entity" .
+
+pred:nationality rdfs:domain ps:Constructor .
+pred:nationality rdfs:domain ps:Driver .
+
+
+pred:number rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:int ;
+    rdfs:label "Entity Number" ;
+    rdfs:comment "Number that identifies an entity" .
+
+pred:number rdfs:domain ps:Driver .
+pred:number rdfs:domain ps:Qualifying .
 
 ############################# RESTRICTIONS #############################
 
