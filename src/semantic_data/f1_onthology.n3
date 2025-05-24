@@ -1,29 +1,233 @@
 @prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <"http://www.w3.org/TR/owl-features#"> .
-
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix pred: <http://pitstop.org/pred/> .
 
+@prefix pred: <http://pitstop.org/pred/> .
 @prefix ps: <http://pitstop.org/> .
 
-@prefix circuit: <http://pitstop.org/circuit/> .
-@prefix constructor: <http://pitstop.org/constructor/> .
-@prefix constructor_result: <http://pitstop.org/constructor_result/> .
-@prefix constructor_standing: <http://pitstop.org/constructor_standing/> .
-@prefix driver: <http://pitstop.org/driver/> .
-@prefix driver_standing: <http://pitstop.org/driver_standing/> .
-@prefix qualifying: <http://pitstop.org/qualifying/> .
-@prefix race: <http://pitstop.org/race/> .
-@prefix result: <http://pitstop.org/result/> .
-@prefix season: <http://pitstop.org/season/> .
-@prefix sprint_result: <http://pitstop.org/sprint_result/> .
-@prefix status: <http://pitstop.org/status/> . 
+############################# HEADER #############################
 
-race:Race rdf:type owl:Class .
-circuit:Circuit rdf:type owl:Class .
+ps:ontology a owl:Ontology ;
+    owl:versionInfo "1.0" ;
+    rdfs:label "PitStop - ontology for Formula 1 Data" ;
+    rdfs:comment "Ontology for modeling Formula 1 racing data including drivers, races, results, constructors, and circuits." ;
+    rdfs:seeAlso <https://www.formula1.com> .
 
-pred:circuitId rdf:type owl:ObjectProperty ;
-    rdfs:domain race:Race ;
-    rdfs:range circuit:Circuit ;
-    rdfs:comment "Circuit of a race" .
+############################# CORE CLASSES #############################
+
+ps:Race rdf:type owl:Class .
+ps:Circuit rdf:type owl:Class .
+ps:Constructor rdf:type owl:Class .
+ps:ConstructorResults rdf:type owl:Class .
+ps:Driver rdf:type owl:Class ;
+    owl:disjointWith ps:Circuit, ps:Constructor .
+ps:Race rdf:type owl:Class .
+ps:SprintResult rdf:type owl:Class .
+ps:Standing rdf:type owl:Class .
+ps:Qualifying rdf:type owl:Class .
+ps:Seasons rdf:type owl:Class .
+ps:Status rdf:type owl:Class .
+
+############################# SUBCLASSES #############################
+
+ps:DriverStanding rdf:type owl:Class ;
+    rdfs:subClassOf ps:Standing .
+
+ps:ConstructorStanding rdf:type owl:Class ;
+    rdfs:subClassOf ps:Standing .
+
+############################# CIRCUIT PROPERTIES #############################
+
+pred:circuitRef rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Circuit ;
+    rdfs:range xsd:string ;
+    rdfs:label "Circuit Reference" ;
+    rdfs:comment "Name of a circuit simplified to be referenced" .
+
+pred:location rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Circuit ;
+    rdfs:range xsd:string ;
+    rdfs:label "Circuit location" ;
+    rdfs:comment "Place where the circuit is present" .
+
+pred:country rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Circuit ;
+    rdfs:range xsd:string ;
+    rdfs:label "Circuit Country" ;
+    rdfs:comment "Country of where the circuit is" .
+
+pred:lat rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Circuit ;
+    rdfs:range xsd:float ;
+    rdfs:label "Circuit Latitude" ;
+    rdfs:comment "Latitude of a Circuit" .
+
+pred:lng rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Circuit ;
+    rdfs:range xsd:float ;
+    rdfs:label "Circuit Longitude" ;
+    rdfs:comment "Longitude of a Circuit" .
+
+pred:alt rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Circuit ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Circuit Altitude" ;
+    rdfs:comment "Altitude of a Circuit" .
+
+############################# CONSTRUCTOR PROPERTIES #############################
+
+pred:participatedIn rdf:type owl:ObjectProperty ;
+    rdfs:domain ps:C
+
+############################# SHARED PROPERTIES #############################
+
+pred:name rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Circuit Reference" ;
+    rdfs:comment "Full Name of a circuit" .
+
+pred:name rdfs:domain ps:Circuit .
+pred:name rdfs:domain ps:Constructor .
+pred:name rdfs:domain ps:Race .
+
+
+pred:url rdf:type owl:DatatypeProperty ;
+    rdfs:range ps:anyURI ;
+    rdfs:label "Url of a Circuit" ;
+    rdfs:comment "URL with more information about a Circuit" .
+
+pred:url rdfs:domain ps:Circuit .
+pred:url rdfs:domain ps:Constructor .
+pred:url rdfs:domain ps:Driver .
+pred:url rdfs:domain ps:Race .
+pred:url rdfs:domain ps:Seasons .
+
+
+pred:participatedIn rdf:type owl:ObjectProperty ;
+    rdfs:range ps:Race ;
+    rdfs:label "Race Identifier" ;
+    rdfs:comment "Identifier for a Race that an entity participated in" .
+
+pred:participatedIn rdfs:domain ps:ConstructorResult .
+pred:participatedIn rdfs:domain ps:ConstructorStanding .
+pred:participatedIn rdfs:domain ps:DriverStanding .
+pred:participatedIn rdfs:domain ps:Qualifying .
+pred:participatedIn rdfs:domain ps:Result .
+pred:participatedIn rdfs:domain ps:SprintResult .
+
+
+pred:hasConstructor rdf:type owl:ObjectProperty ;
+    rdfs:range ps:Constructor ;
+    rdfs:label "Associated Contructor" ;
+    rdfs:comment "Constructor associated to an entity" .
+
+pred:hasConstructor rdfs:domain ps:ConstructorResult .
+pred:hasConstructor rdfs:domain ps:ConstructorStanding .
+pred:hasConstructor rdfs:domain ps:Qualifying .
+pred:hasConstructor rdfs:domain ps:Result .
+pred:hasConstructor rdfs:domain ps:SprintResult .
+
+
+pred:obtainedPoints rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Points Obtained" ;
+    rdfs:comment "Points obtained during an event" .
+
+pred:obtainedPoints rdfs:domain ps:ConstructorResult .
+pred:obtainedPoints rdfs:domain ps:ConstructorStanding .
+pred:obtainedPoints rdfs:domain ps:DriverStanding .
+pred:obtainedPoints rdfs:domain ps:Result .
+pred:obtainedPoints rdfs:domain ps:SprintResult .
+
+
+pred:hasStatus rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Status" ;
+    rdfs:comment "Status of the entity" .
+
+pred:hasStatus rdfs:domain ps:ConstructorResult .
+pred:hasStatus rdfs:domain ps:Status .
+
+
+pred:position rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Position" ;
+    rdfs:comment "Position where a certain entity finished in an event" .
+
+pred:position rdfs:domain ps:ConstructorStanding .
+pred:position rdfs:domain ps:DriverStanding .
+pred:position rdfs:domain ps:Qualifying .
+pred:position rdfs:domain ps:Result .
+pred:position rdfs:domain ps:SprintResult .
+
+
+pred:positionText rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Position Text" ;
+    rdfs:comment "Human.readable version of pred:position" .
+
+pred:positionText rdfs:domain ps:ConstructorStanding .
+pred:positionText rdfs:domain ps:DriverStanding .
+pred:positionText rdfs:domain ps:Result .
+pred:positionText rdfs:domain ps:SprintResult .
+
+
+pred:numberOfWins rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Number of Wins" ;
+    rdfs:comment "The total number of wins until the current event" .
+
+pred:numberOfWins rdfs:domain ps:ConstructorStanding .
+pred:numberOfWins rdfs:domain ps:DriverStanding .
+
+############################# RESTRICTIONS #############################
+
+ps:Circuit owl:equivalentClass [
+    rdf:type owl:Class;
+    owl:intersectionOf (
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:name ; 
+            owl:someValuesFrom xsd:string 
+        ]
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:circuitRef ; 
+            owl:someValuesFrom xsd:string 
+        ]
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:location ; 
+            owl:someValuesFrom xsd:string 
+        ]
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:country ; 
+            owl:someValuesFrom xsd:string 
+        ]
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:lat ; 
+            owl:someValuesFrom xsd:float 
+        ]
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:lng ; 
+            owl:someValuesFrom xsd:float 
+        ]
+        [ 
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:alt ; 
+            owl:someValuesFrom xsd:integer 
+        ]
+        [ 
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:url ; 
+            owl:someValuesFrom xsd:anyURI 
+        ]
+    )
+] .
+
+
+
