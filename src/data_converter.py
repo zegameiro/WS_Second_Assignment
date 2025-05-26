@@ -21,15 +21,13 @@ def csv_to_rdf(csv_file, main_graph, PRED, TYPE, namespaces):
     main_graph.bind(ns_prefix, NS)
     namespaces[name_space] = NS  # Store for lookup
 
-    entity_type = URIRef(TYPE[name_space.capitalize()])
-
     for _, row in df.iterrows():
         entity_uri = URIRef(NS[f"{row.iloc[0]}"])  # Use first column as subject
 
         for col in df.columns[1:]:
             value = row[col]
 
-            if pd.notna(value):
+            if pd.notna(value) and value != '\\N':
                 if "Id" in col:
                     entity = col[:-2]  # Remove "Id" to get the related entity type
                     if entity in namespaces:
@@ -39,9 +37,40 @@ def csv_to_rdf(csv_file, main_graph, PRED, TYPE, namespaces):
                         print(f"Warning: No namespace found for {entity}, using full URI.")
                         main_graph.add((entity_uri, PRED[col], URIRef(f"http://pitstop.org/{entity}/{value}")))
 
+                elif col == "hasDriver":
+                    # Create a URI for the driver and specify its type
+                    driver_uri = URIRef(namespaces["driver"][f"{value}"])
+                    main_graph.add((entity_uri, PRED[col], driver_uri))
+
+                elif col == "participatedIn":
+                    race_uri = URIRef(namespaces["race"][f"{value}"])
+                    main_graph.add((entity_uri, PRED[col], race_uri))
+
+                elif col == "hasConstructor":
+                    constructor_uri = URIRef(namespaces["constructor"][f"{value}"])
+                    main_graph.add((entity_uri, PRED[col], constructor_uri))
+
+                elif col == "hasCircuit":
+                    circuit_uri = URIRef(namespaces["circuit"][f"{value}"])
+                    main_graph.add((entity_uri, PRED[col], circuit_uri))
+
+                elif col == "hasStatus":
+                    status_uri = URIRef(namespaces["status"][f"{value}"])
+                    main_graph.add((entity_uri, PRED[col], status_uri))
+
+                elif col in ["position", "rank", "obtainedPoints", "number", "fastestLap"]:
+                    main_graph.add((entity_uri, PRED[col], Literal(int(value), datatype=XSD.integer)))
+
+                elif col == "milliseconds":
+                    main_graph.add((entity_uri, PRED[col], Literal(value, datatype=XSD.long)))
+
+                elif col == "fastestLapSpeed":
+                    main_graph.add((entity_uri, PRED[col], Literal(float(value), datatype=XSD.float)))
+
                 elif isinstance(value, (int, float)):
-                    datatype = XSD.float if isinstance(value, float) else XSD.int
-                    main_graph.add((entity_uri, PRED[col], Literal(value, datatype=datatype)))
+                    datatype = XSD.float if isinstance(value, float) else XSD.integer
+                    value1 = float(value) if isinstance(value, float) else int(value)
+                    main_graph.add((entity_uri, PRED[col], Literal(value1, datatype=datatype)))
 
                 elif str(value).startswith("http"):
                     main_graph.add((entity_uri, PRED[col], URIRef(value)))
