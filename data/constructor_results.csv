@@ -1,4 +1,4 @@
-constructorResultsId,raceId,constructorId,points,status
+constructorResultsId,participatedIn,hasConstructor,obtainedPoints,hasStatus
 1,18,1,14,\N
 2,18,2,8,\N
 3,18,3,9,\N
