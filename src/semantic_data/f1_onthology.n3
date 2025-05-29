@@ -22,10 +22,10 @@ ps:Constructor rdf:type owl:Class .
 ps:ConstructorResults rdf:type owl:Class .
 ps:Driver rdf:type owl:Class ;
     owl:disjointWith ps:Circuit, ps:Constructor .
-ps:Race rdf:type owl:Class .
+ps:Result rdf:type owl:Class .
 ps:Standing rdf:type owl:Class .
 ps:Qualifying rdf:type owl:Class .
-ps:Seasons rdf:type owl:Class .
+ps:Season rdf:type owl:Class .
 ps:Status rdf:type owl:Class .
 
 ############################# SUBCLASSES #############################
@@ -40,24 +40,14 @@ ps:ConstructorStanding rdf:type owl:Class ;
 
 pred:name rdf:type owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    rdfs:label "Circuit Reference" ;
-    rdfs:comment "Full Name of a circuit" .
-
-pred:name rdfs:domain ps:Circuit .
-pred:name rdfs:domain ps:Constructor .
-pred:name rdfs:domain ps:Race .
+    rdfs:label "Entity Name" ;
+    rdfs:comment "Full Name of a certain entity" .
 
 
 pred:url rdf:type owl:DatatypeProperty ;
     rdfs:range ps:anyURI ;
     rdfs:label "Url of a Circuit" ;
-    rdfs:comment "URL with more information about a Circuit" .
-
-pred:url rdfs:domain ps:Circuit .
-pred:url rdfs:domain ps:Constructor .
-pred:url rdfs:domain ps:Driver .
-pred:url rdfs:domain ps:Race .
-pred:url rdfs:domain ps:Seasons .
+    rdfs:comment "URL with more information about a certain Entity" .
 
 
 pred:participatedIn rdf:type owl:ObjectProperty ;
@@ -65,22 +55,11 @@ pred:participatedIn rdf:type owl:ObjectProperty ;
     rdfs:label "Race Identifier" ;
     rdfs:comment "Identifier for a Race that an entity participated in" .
 
-pred:participatedIn rdfs:domain ps:ConstructorResult .
-pred:participatedIn rdfs:domain ps:ConstructorStanding .
-pred:participatedIn rdfs:domain ps:DriverStanding .
-pred:participatedIn rdfs:domain ps:Qualifying .
-pred:participatedIn rdfs:domain ps:Result .
-
 
 pred:hasConstructor rdf:type owl:ObjectProperty ;
     rdfs:range ps:Constructor ;
     rdfs:label "Associated Contructor" ;
     rdfs:comment "Constructor associated to an entity" .
-
-pred:hasConstructor rdfs:domain ps:ConstructorResult .
-pred:hasConstructor rdfs:domain ps:ConstructorStanding .
-pred:hasConstructor rdfs:domain ps:Qualifying .
-pred:hasConstructor rdfs:domain ps:Result .
 
 
 pred:obtainedPoints rdf:type owl:DatatypeProperty ;
@@ -88,19 +67,11 @@ pred:obtainedPoints rdf:type owl:DatatypeProperty ;
     rdfs:label "Points Obtained" ;
     rdfs:comment "Points obtained during an event" .
 
-pred:obtainedPoints rdfs:domain ps:ConstructorResult .
-pred:obtainedPoints rdfs:domain ps:ConstructorStanding .
-pred:obtainedPoints rdfs:domain ps:DriverStanding .
-pred:obtainedPoints rdfs:domain ps:Result .
-
 
 pred:hasStatus rdf:type owl:ObjectProperty ;
     rdfs:range ps:Status ;
     rdfs:label "Status" ;
     rdfs:comment "Status of the entity" .
-
-pred:hasStatus rdfs:domain ps:ConstructorResult .
-pred:hasStatus rdfs:domain ps:Results .
 
 
 pred:position rdf:type owl:DatatypeProperty ;
@@ -108,29 +79,18 @@ pred:position rdf:type owl:DatatypeProperty ;
     rdfs:label "Position" ;
     rdfs:comment "Position where a certain entity finished in an event" .
 
-pred:position rdfs:domain ps:ConstructorStanding .
-pred:position rdfs:domain ps:DriverStanding .
-pred:position rdfs:domain ps:Qualifying .
-pred:position rdfs:domain ps:Result .
-
 
 pred:positionText rdf:type owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "Position Text" ;
     rdfs:comment "Human-readable version of pred:position" .
 
-pred:positionText rdfs:domain ps:ConstructorStanding .
-pred:positionText rdfs:domain ps:DriverStanding .
-pred:positionText rdfs:domain ps:Result .
-
 
 pred:numberOfWins rdf:type owl:DatatypeProperty ;
+    rdfs:domain ps:Standing ;
     rdfs:range xsd:integer ;
     rdfs:label "Number of Wins" ;
     rdfs:comment "The total number of wins until the current event" .
-
-pred:numberOfWins rdfs:domain ps:ConstructorStanding .
-pred:numberOfWins rdfs:domain ps:DriverStanding .
 
 
 pred:hasDriver rdf:type owl:ObjectProperty ;
@@ -138,27 +98,17 @@ pred:hasDriver rdf:type owl:ObjectProperty ;
     rdfs:label "Driver reference" ;
     rdfs:comment "Reference to a driver that participated in an event" .
 
-pred:hasDriver rdfs:domain ps:DriverStanding .
-pred:hasDriver rdfs:domain ps:Qualifying .
-pred:hasDriver rdfs:domain ps:Result .
 
 pred:nationality rdf:type owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "Nationality" ;
     rdfs:comment "Nationality of an entity" .
 
-pred:nationality rdfs:domain ps:Constructor .
-pred:nationality rdfs:domain ps:Driver .
-
 
 pred:number rdf:type owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
     rdfs:label "Entity Number" ;
     rdfs:comment "Number that identifies an entity" .
-
-pred:number rdfs:domain ps:Driver .
-pred:number rdfs:domain ps:Qualifying .
-pred:number rdfs:domain ps:Result .
 
 pred:time rdf:type owl:DatatypeProperty ;
     rdfs:range xsd:string ;
@@ -167,7 +117,8 @@ pred:time rdf:type owl:DatatypeProperty ;
 
 ############################# CIRCUIT PROPERTIES #############################
 
-pred:circuitRef rdf:type owl:DatatypeProperty ;
+pred:circuitRef rdf:type owl:DatatypeProperty, owl:FunctionalProperty, owl:InverseFunctionalProperty ;
+    rdf:type owl:FunctionalProperty ;
     rdfs:domain ps:Circuit ;
     rdfs:range xsd:string ;
     rdfs:label "Circuit Reference" ;
@@ -205,7 +156,7 @@ pred:alt rdf:type owl:DatatypeProperty ;
 
 ############################# CONSTRUCTOR PROPERTIES #############################
 
-pred:constructorRef rdf:type owl:DatatypeProperty ;
+pred:constructorRef rdf:type owl:DatatypeProperty, owl:FunctionalProperty, owl:InverseFunctionalProperty ;
     rdfs:domain ps:Constructor ;
     rdfs:range xsd:string ;
     rdfs:label "Constructor Reference" ;
@@ -213,7 +164,7 @@ pred:constructorRef rdf:type owl:DatatypeProperty ;
 
 ############################# DRIVER PROPERTIES #############################
 
-pred:driverRef rdf:type owl:DatatypeProperty ;
+pred:driverRef rdf:type owl:DatatypeProperty, owl:FunctionalProperty, owl:InverseFunctionalProperty ;
     rdfs:domain ps:Driver ;
     rdfs:range xsd:string ;
     rdfs:label "Driver Reference" ;
@@ -372,6 +323,17 @@ pred:status rdf:type owl:DatatypeProperty ;
 ############################# RESTRICTIONS #############################
 
 ps:Circuit owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:circuitRef ;
+            owl:someValuesFrom xsd:string
+        ]
+    )
+] .
+
+ps:Circuit owl:equivalentClass [
     rdf:type owl:Class;
     owl:intersectionOf (
         [
@@ -443,6 +405,18 @@ ps:ConstructorResult owl:equivalentClass [
     )
 ] .
 
+ps:Standing owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:numberOfWins ;
+            owl:someValuesFrom xsd:integer
+        ]
+    )
+] .
+
+
 ps:ConstructorStanding owl:equivalentClass [
     rdf:type owl:Class;
     owl:intersectionOf (
@@ -475,6 +449,17 @@ ps:ConstructorStanding owl:equivalentClass [
             rdf:type owl:Restriction ;
             owl:onProperty pred:numberOfWins ; 
             owl:someValuesFrom xsd:integer 
+        ]
+    )
+] .
+
+ps:Constructor owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:constructorRef ;
+            owl:someValuesFrom xsd:string
         ]
     )
 ] .
@@ -536,6 +521,19 @@ ps:DriverStanding owl:equivalentClass [
     )
 ] .
 
+
+ps:Driver owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:driverRef ;
+            owl:someValuesFrom xsd:string
+        ]
+    )
+] .
+
+
 ps:Driver owl:equivalentClass [
     rdf:type owl:Class;
     owl:intersectionOf (
@@ -577,6 +575,17 @@ ps:Driver owl:equivalentClass [
         [
             rdf:type owl:Restriction ;
             owl:onProperty pred:url ; 
+            owl:someValuesFrom xsd:anyURI
+        ]
+    )
+] .
+
+ps:Qualifying owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:q1 ;
             owl:someValuesFrom xsd:string
         ]
     )
@@ -619,6 +628,17 @@ ps:Qualifying owl:equivalentClass [
             rdf:type owl:Restriction ;
             owl:onProperty pred:q3 ; 
             owl:someValuesFrom xsd:string
+        ]
+    )
+] .
+
+ps:Race owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:round ; 
+            owl:someValuesFrom xsd:integer 
         ]
     )
 ] .
@@ -675,7 +695,7 @@ ps:Season owl:equivalentClass [
     )
 ] .
 
-ps:STatus owl:equivalentClass [
+ps:Status owl:equivalentClass [
     rdf:type owl:Class;
     owl:intersectionOf (
         [
