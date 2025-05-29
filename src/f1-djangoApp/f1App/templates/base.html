@@ -1,0 +1,57 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>Pitstop</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}
+	</head>
+
+	<body class="bg-[#15151d] font-serif leading-normal tracking-normal">
+		<div class="bg-[#e10600] shadow-sm py-2 flex">
+			<div class="flex">
+				<Link to="/">
+				<img src="{% static 'images/f1_logo.png' %}" alt="logo" class="h-10" />
+				</Link>
+			</div>
+			<div class="flex-none">
+				<ul class="flex px-2 text-white">
+					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
+						<a href="/driver" class="text-xl font-semibold">
+						<span class="flex items-center">
+							<span class="m-2 text-xl font-semibold">Drivers</span>
+						</span>
+						</a>
+					</li>
+					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
+						<a href="/races" class="text-xl font-semibold">
+						<span class="flex items-center">
+							<span class="m-2 text-xl font-semibold">Races</span>
+						</span>
+						</Link>
+					</li>
+					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
+						<a href="/constructors" class="text-xl font-semibold">
+						<span class="flex items-center">
+							<span class="m-2 text-xl font-semibold">Constructors</span>
+						</span>
+						</a>
+					</li>
+					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
+						<a href="/seasons" class="text-xl font-semibold">
+						<span class="flex items-center">
+							<span class="m-2 text-xl font-semibold">Seasons</span>
+						</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+      <main>
+		{% block content %} {% endblock %}
+	  </main>
+	</body>
+</html>
