@@ -1,5 +1,5 @@
-from f1_pitstop.graph_db import db
-from app.constants import *
+from mysite.graph_db import db
+from f1App.constants import *
 import json
 
 def retrieve_races_by_date(offset):

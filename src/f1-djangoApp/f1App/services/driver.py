@@ -1,5 +1,5 @@
-from app.constants import *
-from app.repositories.driver import *
+from f1App.constants import *
+from f1App.repositories.driver import *
 
 import json
 

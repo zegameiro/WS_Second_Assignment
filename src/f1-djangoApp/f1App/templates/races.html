@@ -22,20 +22,20 @@
             <tbody>
                 {% for race in races %}
                 <tr class="text-lg">
-                    <th>{{ forloop.counter0|add:indexRaces|add:1 }}</th>
+                    <th>{{ woof }}</th>
                     <td>{{ race.raceName }}</td>
                     <td>
                         {% if race.raceDetails %}
-                            <span class="badge badge-outline badge-success">{{ race.raceDetails.0.year }}</span>
+                            <span class="badge badge-outline badge-success">{{ woof }}</span>
                         {% endif %}
                     </td>
                     <td>
                         {% if race.raceDetails %}
-                            <span class="badge badge-outline badge-error">{{ race.raceDetails|last.year }}</span>
+                            <span class="badge badge-outline badge-error">{{ woof }}</span>
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'your_detail_view_name' race.raceName|slugify %}">
+                        <a href="{% url 'race_detail' race.id %}">
                             <button class="btn btn-soft btn-info btn-circle">
                                 <i class="pi pi-search-plus text-xl"></i>
                             </button>

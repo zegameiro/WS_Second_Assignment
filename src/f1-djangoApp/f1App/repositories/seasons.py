@@ -1,5 +1,5 @@
-from f1_pitstop.graph_db import db
-from app.constants import *
+from mysite.graph_db import db
+from f1App.constants import *
 
 def retrieve_all_seasons(offset):
     """Retrieve all seasons from the database with pagination."""

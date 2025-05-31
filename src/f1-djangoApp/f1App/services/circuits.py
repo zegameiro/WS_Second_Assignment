@@ -1,4 +1,3 @@
-from mysite.graph_db import db
 from f1App.constants import *
 from f1App.repositories.circuits import *
 

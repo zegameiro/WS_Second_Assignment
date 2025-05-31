@@ -1,4 +1,5 @@
-from app.repositories.constructor import *
+from f1App.repositories.constructor import *
+from f1App.constants import *
 
 import json
 

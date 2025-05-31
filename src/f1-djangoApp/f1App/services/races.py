@@ -1,6 +1,5 @@
-from f1_pitstop.graph_db import db
-from app.constants import *
-from app.repositories.races import *
+from f1App.constants import *
+from f1App.repositories.races import *
 
 import json
 

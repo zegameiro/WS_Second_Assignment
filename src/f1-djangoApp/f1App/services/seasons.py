@@ -1,6 +1,5 @@
-from f1_pitstop.graph_db import db
-from app.constants import *
-from app.repositories.seasons import *
+from f1App.constants import *
+from f1App.repositories.seasons import *
 
 
 import json
