@@ -36,8 +36,7 @@ def retrieve_driver_by_id(driver_id):
 
         SELECT * 
         WHERE {{
-            ns:{driver_id} a type:Driver ;
-                pred:forename ?forename ;
+            ns:{driver_id} pred:forename ?forename ;
                 pred:surname ?surname ;
                 pred:dob ?dob ;
                 pred:nationality ?nationality ;
