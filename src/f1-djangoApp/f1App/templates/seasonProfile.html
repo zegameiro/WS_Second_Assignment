@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- templates/season.html -->
+<div class="p-6">
+  <h1 class="text-6xl">Season of {{ year }}</h1>
+  <div class="divider divider-error"></div>
+
+  <div class="flex w-full">
+    <!-- Left side - Timeline -->
+    <div class="w-1/2 flex flex-col items-center pr-[100px]">
+      <div class="text-4xl font-bold">Races Timeline</div>
+      <ul class="timeline timeline-vertical timeline-start">
+        {% for race in races %}
+          <li class="place-items-start">
+            {% if not forloop.first %}<hr class="bg-white">{% endif %}
+            <div class="timeline-start">{{ race.date }}</div>
+            <div class="timeline-middle m-2">
+              <i class="text-white-500 fas fa-check-circle"></i>
+            </div>
+            <div class="timeline-end timeline-box w-full">
+              {% if race.winner and race.raceName and race.fastestLap %}
+                {% include "partials/timeline_info_card.html" with winner=race.winner racename=race.raceName fastLap=race.fastestLap %}
+              {% endif %}
+            </div>
+            {% if not forloop.last %}<hr class="bg-white">{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Right side - Podiums -->
+    <div class="w-1/2 pt-20 flex flex-col gap-20">
+      <!-- Drivers Podium -->
+      <div>
+        <div class="flex justify-around h-[200px]">
+          <div class="bg-amber-700 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-5 transition-all duration-500 ease-out h-[100px]">
+            <div class="flex flex-col justify-center items-center">
+              <a href="{% url 'driverProfile' drivers.2.id %}" class="hover:scale-105 duration-200">
+                <span class="flex gap-2 items-center">
+                  {{ drivers.2.driverName }}
+                </span>
+              </a>
+              <span class="flex items-center gap-1">{{ drivers.2.totalPoints }}</span>
+            </div>
+          </div>
+          <div class="bg-amber-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-5 transition-all duration-500 ease-out h-[200px]">
+            <div class="flex flex-col justify-center items-center">
+              <a href="{% url 'driverProfile' drivers.0.id %}" class="hover:scale-105 duration-200">
+                <span class="flex gap-2 items-center">
+                  {{ drivers.0.driverName }}
+                </span>
+              </a>
+              <span class="flex items-center gap-1">{{ drivers.0.totalPoints }}</span>
+            </div>
+          </div>
+          <div class="bg-gray-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-5 transition-all duration-500 ease-out h-[140px]">
+            <div class="flex flex-col justify-center items-center">
+              <a href="{% url 'driverProfile' drivers.1.id %}" class="hover:scale-105 duration-200">
+                <span class="flex gap-2 items-center">
+                  {{ drivers.1.driverName }}
+                </span>
+              </a>
+              <span class="flex items-center gap-1">{{ drivers.1.totalPoints }}</span>
+            </div>
+          </div>
+          <!-- Repeat similar blocks for 1st and 3rd drivers -->
+        </div>
+        <div class="divider text-xl divider-accent">Drivers Podium</div>
+      </div>
+
+      <!-- Constructor Podium -->
+      <div>
+        <div class="flex justify-around h-[200px]">
+          <div class="bg-amber-700 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-5 transition-all duration-500 ease-out h-[100px]">
+            <div class="flex flex-col justify-center items-center">
+              <span class="flex gap-1 items-center">{{ teams.2.constructorName }}</span>
+              <span class="flex items-center gap-1">{{ teams.2.totalPoints }}</span>
+            </div>
+          </div>
+          <div class="bg-amber-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-5 transition-all duration-500 ease-out h-[200px]">
+            <div class="flex flex-col justify-center items-center">
+              <span class="flex gap-1 items-center">{{ teams.0.constructorName }}</span>
+              <span class="flex items-center gap-1">{{ teams.0.totalPoints }}</span>
+            </div>
+          </div>
+          <div class="bg-gray-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-5 transition-all duration-500 ease-out h-[140px]">
+            <div class="flex flex-col justify-center items-center">
+              <span class="flex gap-1 items-center">{{ teams.1.constructorName }}</span>
+              <span class="flex items-center gap-1">{{ teams.1.totalPoints }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="divider text-xl divider-accent">Constructor Podium</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

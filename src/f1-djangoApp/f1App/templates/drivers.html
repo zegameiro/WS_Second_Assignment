@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-6">
+    <span class="flex items-center justify-between text-3xl">
+        <span class="flex items-center justify-center gap-2">
+          <i class="fa-solid fa-id-card text-2xl align-middle"></i>
+          <h1 class="font-bold">Drivers</h1>
+        </span>
+        <form method="get" action="{% url 'drivers' %}">
+            <label class="input flex items-center gap-2">
+                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                </g>
+                </svg>
+                <input
+                type="search"
+                name="query"
+                class="grow"
+                placeholder="Search"
+                value="{{ request.GET.query|default_if_none:'' }}"
+                />
+            </label>
+        </form>
+      </span>
+    <div class="flex flex-col items-center w-full">
+      <div class="pt-4 overflow-x-auto w-full">
+        <table class="table table-zebra text-white">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Nationality</th>
+                <th>Code</th>
+                <th>Number</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for driver in drivers %}
+                <tr class="text-lg">
+                    <th>{{driver.index}}</th>
+                    <td>{{driver.forename}} {{driver.surname}}</td>
+                    <td>
+                    <img
+                        src={{driver.flag}}
+                        alt="Country Flag"
+                        class="h-10 w-10"
+                    />
+                    </td>
+                    <td>
+                        {% if driver.code %}
+                            <span class="badge badge-outline badge-error">
+                                {{ driver.code }}
+                            </span>
+                        {% else %}
+                            <i class="fas fa-question-circle text-warning text-xl"></i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if driver.number %}
+                            {{ driver.number }}
+                        {% else %}
+                            <i class="fas fa-question-circle text-warning text-xl"></i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="drivers/{{driver.id}}">
+                            <button class="btn btn-soft btn-info btn-circle">
+                                <i class="fa-solid fa-magnifying-glass-plus text-xl"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+      <div class="join justify-center w-full pt-4">
+        <!-- Previous Button -->
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" 
+                class="join-item btn btn-soft btn-error"
+            >
+            «
+            </a>
+        {% else %}
+            <button class="join-item btn btn-soft">
+            «
+            </button>
+        {% endif %}
+
+        <!-- Current Page Button -->
+        <p class="join-item btn btn-error">
+            Page {{ page_obj.page }}
+        </p>
+
+        <!-- Next Button -->
+        <a href="?page={{ page_obj.next_page_number }}" 
+            class="join-item btn btn-soft btn-error"
+        >
+        »
+        </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

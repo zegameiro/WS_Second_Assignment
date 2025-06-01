@@ -1,0 +1,1 @@
+f1App/static/css/tailwindcss-linux-x64 -i f1App/static/css/input.css -o f1App/static/css/output.css

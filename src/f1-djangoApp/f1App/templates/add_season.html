@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="w-[60%] mx-auto h-[100vh] flex flex-col items-center justify-center">
+  <form method="POST" action="{% url 'add_season' %}" class="border-2 border-error rounded-lg flex flex-col items-center w-[30%] gap-3 p-3">
+    {% csrf_token %}
+    <span class="text-xl">Adding a Season</span>
+    <input type="number" name="year" placeholder="Year" class="input input-bordered w-full" required />
+    <input type="text" name="url" placeholder="URL" class="input input-bordered w-full" required />
+    <button type="submit" class="flex items-center justify-center btn bg-red-500 text-white gap-2">
+      <i class="fa-solid fa-circle-plus"></i> Add
+    </button>
+  </form>
+</div>
+{% endblock %}

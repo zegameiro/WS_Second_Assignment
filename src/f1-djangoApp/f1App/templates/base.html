@@ -1,13 +1,13 @@
-{% load static tailwind_tags %}
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-    <title>Pitstop</title>
+		<title>Pitstop</title>
+		{% load static %}
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		{% tailwind_css %}
+    	<link href="{% static 'css/output.css' %}" rel="stylesheet" type="text/css" />
+		<script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
 	</head>
 
 	<body class="bg-[#15151d] font-serif leading-normal tracking-normal">
@@ -20,24 +20,27 @@
 			<div class="flex-none">
 				<ul class="flex px-2 text-white">
 					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
-						<a href="/driver" class="text-xl font-semibold">
-						<span class="flex items-center">
-							<span class="m-2 text-xl font-semibold">Drivers</span>
+						<a href="/drivers" class="text-xl font-semibold">
+						<span class="flex items-center m-2 gap-2">
+							<div><i class="fa-solid fa-id-card text-xl"></i></div> 
+							<span class="text-xl font-semibold">Drivers</span>
 						</span>
 						</a>
 					</li>
 					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
 						<a href="/races" class="text-xl font-semibold">
-						<span class="flex items-center">
-							<span class="m-2 text-xl font-semibold">Races</span>
+						<span class="flex items-center m-2 justify-center">
+							<i class="fa-solid fa-flag-checkered text-lg"></i>
+							<span class="text-xl font-semibold">Races</span>
 						</span>
 						</Link>
 					</li>
 					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
 						<a href="/constructors" class="text-xl font-semibold">
-						<span class="flex items-center">
-							<span class="m-2 text-xl font-semibold">Constructors</span>
-						</span>
+							<span class="flex items-center m-2 justify-center">
+								<i class="fa-solid fa-car-side text-lg"></i>
+								<span class="text-xl font-semibold">Constructors</span>
+							</span>
 						</a>
 					</li>
 					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">

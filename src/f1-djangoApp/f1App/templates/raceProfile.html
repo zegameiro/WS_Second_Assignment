@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-6">
+  <h1 class="flex items-center gap-2 text-2xl font-semibold pb-5">
+    <i class="fa-solid fa-flag-checkered"></i> Race Details
+  </h1>
+
+  <div class="flex flex-col gap-4">
+    <div class="flex justify-between gap-10 border-2 border-error shadow-xl p-6 rounded-2xl w-full">
+      <!-- Left Column -->
+      <div class="flex flex-col gap-7 w-full">
+        <h1 class="text-2xl font-bold">Race Information</h1>
+        <div class="divider divider-error my-[-20px]"></div>
+        <div class="flex items-center w-full">
+          <div class="flex flex-col text-xl space-y-3">
+            {% if race.name %}
+            <p class="flex gap-4"><span class="font-semibold">Name</span> {{ race.name }}</p>
+            {% endif %}
+            {% if race.date %}
+            <p class="flex gap-4"><span class="font-semibold">Date</span> {{ race.date }}</p>
+            {% endif %}
+            {% if race.round %}
+            <p class="flex gap-4"><span class="font-semibold">Round</span> {{ race.round }}</p>
+            {% endif %}
+            {% if race.url %}
+            <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ race.url }}">
+              {{ race.url }}
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="divider divider-horizontal divider-error"></div>
+
+      <!-- Right Column -->
+      <div class="flex flex-col gap-7 w-full">
+        <h1 class="text-2xl font-bold">Circuit Information</h1>
+        <div class="divider divider-error my-[-20px]"></div>
+        <div class="flex items-center w-full">
+          <div class="flex flex-col text-xl space-y-3">
+            {% if circuit.name %}
+            <p class="flex gap-4"><span class="font-semibold">Name</span> {{ circuit.name }}</p>
+            {% endif %}
+            {% if circuit.location %}
+            <p class="flex gap-4"><span class="font-semibold">Location</span> {{ circuit.location }}</p>
+            {% endif %}
+            {% if circuit.lat and circuit.lng %}
+            <p class="flex gap-4"><span class="font-semibold">Coordinates</span> ({{ circuit.lat }}, {{ circuit.lng }})</p>
+            {% endif %}
+            {% if circuit.country %}
+            <p class="flex gap-4"><span class="font-semibold">Country</span> {{ circuit.country }}</p>
+            {% endif %}
+            {% if circuit.url %}
+            <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ circuit.url }}">
+              {{ circuit.url }}
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if results %}
+    <div class="pt-10">
+      <div class="flex justify-around h-[200px]">
+        <!-- Third place -->
+        <div class="bg-amber-700 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3" style="height: 100px;">
+          <div class="flex flex-col text-center justify-center items-center">
+            <a href="{% url 'driverProfile' results.2.id %}" class="duration-200 transition hover:scale-105">
+              <span class="flex gap-2 items-center">
+                <i class="fa-solid fa-helmet-safety"></i> {{ results.2.driverName }}
+              </span>
+            </a>
+            <span class="flex gap-2 items-center">
+              <i class="fa-solid fa-car-side text-3xl"></i> {{ results.2.constructorName }}
+            </span>
+            <span class="flex items-center gap-2">
+              <i class="fa-regular fa-clock"></i> {{ results.2.time }}
+            </span>
+          </div>
+        </div>
+
+        <!-- First place -->
+        <div class="bg-amber-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3" style="height: 200px;">
+          <div class="flex flex-col text-center justify-center items-center">
+            <a href="{% url 'driverProfile' results.0.id %}" class="duration-200 transition hover:scale-105">
+              <span class="flex gap-2 items-center">
+                <i class="fa-solid fa-helmet-safety"></i> {{ results.0.driverName }}
+              </span>
+            </a>
+            <span class="flex gap-2 items-center">
+              <i class="fa-solid fa-car-side text-3xl"></i> {{ results.0.constructorName }}
+            </span>
+            <span class="flex items-center gap-2">
+              <i class="fa-regular fa-clock"></i> {{ results.0.time }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Second place -->
+        <div class="bg-gray-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3" style="height: 150px;">
+          <div class="flex flex-col text-center justify-center items-center">
+            <a href="{% url 'driverProfile' results.1.id %}" class="duration-200 transition hover:scale-105">
+              <span class="flex gap-2 items-center">
+                <i class="fa-solid fa-helmet-safety"></i> {{ results.1.driverName }}
+              </span>
+            </a>
+            <span class="flex gap-2 items-center">
+              <i class="fa-solid fa-car-side text-3xl"></i> {{ results.1.constructorName }}
+            </span>
+            <span class="flex items-center gap-2">
+              <i class="fa-regular fa-clock"></i> {{ results.1.time }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider text-xl divider-accent">Drivers Podium</div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
