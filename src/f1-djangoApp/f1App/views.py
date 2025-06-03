@@ -15,7 +15,7 @@ from f1App.services.seasons import delete_season_service, get_all_seasons, get_c
 
 # Create your views here.
 def index(request):
-    template = loader.get_template("base.html")
+    template = loader.get_template("homePage.html")
     context = {"latest_question_list": "woof"}
     return HttpResponse(template.render(context, request))
 

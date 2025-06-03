@@ -10,44 +10,45 @@
 		<script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
 	</head>
 
-	<body class="bg-[#15151d] font-serif leading-normal tracking-normal">
-		<div class="bg-[#e10600] shadow-sm py-2 flex">
+	<body class="font-serif leading-normal tracking-normal">
+		<div class="bg-[#e10600] justify-between shadow-sm p-[10px] flex">
 			<div class="flex">
-				<Link to="/">
-				<img src="{% static 'images/f1_logo.png' %}" alt="logo" class="h-10" />
-				</Link>
+				<a href="/">
+					<img src="{% static 'images/f1_logo.png' %}" alt="logo" class="h-10" />
+				</a>
 			</div>
-			<div class="flex-none">
+			<div class="flex flex-row gap-4">
 				<ul class="flex px-2 text-white">
-					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
+					<li class="flex flex-row items-center hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
 						<a href="/drivers" class="text-xl font-semibold">
-						<span class="flex items-center m-2 gap-2">
-							<div><i class="fa-solid fa-id-card text-xl"></i></div> 
-							<span class="text-xl font-semibold">Drivers</span>
-						</span>
+							<span class="flex items-center m-2 gap-2">
+								<i class="fa-solid fa-id-card text-xl"></i>
+								<span class="text-xl font-semibold">Drivers</span>
+							</span>
 						</a>
 					</li>
-					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
+					<li class="flex flex-row items-center  px-2 hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
 						<a href="/races" class="text-xl font-semibold">
-						<span class="flex items-center m-2 justify-center">
-							<i class="fa-solid fa-flag-checkered text-lg"></i>
-							<span class="text-xl font-semibold">Races</span>
-						</span>
+							<span class="gap-2">
+								<i class="fa-solid fa-flag-checkered text-lg"></i>
+								<span class="text-xl font-semibold">Races</span>
+							</span>
 						</Link>
 					</li>
-					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
+					<li class="flex flex-row items-center px-2 hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
 						<a href="/constructors" class="text-xl font-semibold">
-							<span class="flex items-center m-2 justify-center">
-								<i class="fa-solid fa-car-side text-lg"></i>
+							<span class="gap-4">
+								<i class="fa-solid fa-car"></i>
 								<span class="text-xl font-semibold">Constructors</span>
 							</span>
 						</a>
 					</li>
-					<li class="hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
+					<li class="flex flex-row items-center px-2 hover:bg-amber-50 hover:rounded-sm hover:duration-500 hover:text-black">
 						<a href="/seasons" class="text-xl font-semibold">
-						<span class="flex items-center">
-							<span class="m-2 text-xl font-semibold">Seasons</span>
-						</span>
+							<span class="gap-4">
+								<i class="fa-solid fa-calendar-days"></i>
+								<span class="text-xl font-semibold">Seasons</span>
+							</span>
 						</a>
 					</li>
 				</ul>

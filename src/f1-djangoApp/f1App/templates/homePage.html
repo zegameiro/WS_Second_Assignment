@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .image-container {
+      position: relative;
+      height: 800px;
+      width: 100%;
+    }
+    .background-img {
+      position: absolute;
+      border-radius: 1rem;
+      width: 100%;
+      height: auto;
+      transform-origin: center;
+      transition: transform 0.1s;
+    }
+    .car-img {
+      position: absolute;
+      pointer-events: none;
+      width: 100%;
+      height: auto;
+      transition: transform 0.1s;
+    }
+</style>
+<body class="text-black">
+
+    <div class="items-center flex flex-col">
+      <h1 class="text-7xl font-bold p-8">Pitstop The F1 Data Checker</h1>
+      <div class="border-t border-gray-300 w-[80%] my-6"></div>
+  
+      <div class="flex w-[60%] justify-center">
+        <div class="image-container">
+          {% load static %}
+          <img src="{% static 'images/backGround.jpg' %}" class="background-img" id="bg" />
+          <img src="{% static 'images/f1_car.png' %}" class="car-img" id="car" />
+        </div>
+      </div>
+  
+      <div class="flex flex-col justify-start w-[60%] mt-10">
+        <h1 class="text-5xl pb-5">Explore</h1>
+        <div class="grid grid-cols-2 w-[50%] gap-4">
+          <a href="/drivers">
+            <button class="items-center justify-center btn btn-xl w-full bg-[#e10600] text-white font-semibold py-2 px-4 rounded">
+              <i class="fa-solid fa-id-card text-xl"></i>
+              Drivers
+            </button>
+          </a>
+          <a href="/races">
+            <button class="items-center justify-center btn btn-xl w-full bg-[#e10600] text-white font-semibold py-2 px-4 rounded">
+              <i class="fa-solid fa-flag-checkered text-lg"></i>
+              Races
+            </button>
+          </a>
+          <a href="/constructors">
+            <button class="items-center justify-center btn btn-xl w-full bg-[#e10600] text-white font-semibold py-2 px-4 rounded">
+              <i class="fa-solid fa-car"></i>
+              Constructors
+            </button>
+          </a>
+          <a href="/seasons">
+            <button class="items-center justify-center btn btn-xl w-full bg-[#e10600] text-white font-semibold py-2 px-4 rounded">
+              <i class="fa-solid fa-calendar-days"></i>
+              Seasons
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  
+    <script>
+      const bg = document.getElementById("bg");
+      const car = document.getElementById("car");
+  
+      window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+        const skew = Math.min((scrollY / 300) * 15, 15);
+        
+        // Apply skew and rotation to background
+        bg.style.transform = `skewX(${skew / 3}deg) rotateY(${skew}deg)`;
+  
+        // Apply diagonal move to car
+        car.style.transform = `translate(${skew * 20}px, ${skew * 20}px)`;
+      });
+    </script>
+</body>
+
+{% endblock %}
