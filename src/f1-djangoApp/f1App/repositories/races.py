@@ -8,10 +8,9 @@ def retrieve_races_by_date(offset):
     query = f"""
         PREFIX ns: <{NS}>
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
         SELECT ?raceName (GROUP_CONCAT(CONCAT(STR(?raceId), "__", STR(?year)); SEPARATOR=",") AS ?raceDetails)
         WHERE {{
-            ?raceId a type:Race ;
+            ?raceId a ns:Race ;
                 pred:name ?raceName ;
                 pred:year ?year .
         }}
@@ -27,57 +26,57 @@ def retrieve_races_by_date(offset):
 def retrieve_races_by_year(year, offset):
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         SELECT ?raceId ?raceName ?raceDate ?fastestDriverId ?fastestDriverName ?fastestConstructorId ?fastestConstructorName ?fastestLap ?winnerDriverId ?winnerDriverName ?winnerConstructorId ?winnerConstructorName ?winnerfastestLap
         WHERE {{
             {{
                 SELECT ?raceId ?raceName (MIN(?fastest) AS ?minFastestLap)
                 WHERE {{
-                    ?raceId a type:Race ;
+                    ?raceId a ps:Race ;
                         pred:name ?raceName ;
                         pred:year "{year}"^^xsd:int .
-                    ?result a type:Result ;
-                        pred:raceId ?raceId ;
+                    ?result a ps:Result ;
+                        pred:participatedIn ?raceId ;
                         pred:fastestLapTime ?fastest .
                 }}
                 GROUP BY ?raceId ?raceName
             }}
             
-            ?raceId a type:Race ;
+            ?raceId a ps:Race ;
                 pred:date ?raceDate .
 
-            ?result a type:Result ;
-                    pred:raceId ?raceId ;
+            ?result a ps:Result ;
+                    pred:participatedIn ?raceId ;
                     pred:fastestLapTime ?fastestLap ;
-                    pred:driverId ?fastestDriverId ;
-                    pred:constructorId ?fastestConstructorId ;
+                    pred:hasDriver ?fastestDriverId ;
+                    pred:hasConstructor ?fastestConstructorId ;
                     pred:position ?position .
                     
             FILTER(?fastestLap = ?minFastestLap)
 
-            ?winnerResult a type:Result ;
-                    pred:raceId ?raceId ;
+            ?winnerResult a ps:Result ;
+                    pred:participatedIn ?raceId ;
                     pred:fastestLapTime ?winnerfastestLap ;
-                    pred:driverId ?winnerDriverId ;
-                    pred:constructorId ?winnerConstructorId ;
+                    pred:hasDriver ?winnerDriverId ;
+                    pred:hasConstructor ?winnerConstructorId ;
                     pred:position "1"^^xsd:string .
                     
-            ?winnerDriverId a type:Driver ;
+            ?winnerDriverId a ps:Driver ;
                     pred:forename ?winnerDriverForename ;
                     pred:surname ?winnerDriverSurname .
 
             BIND(CONCAT(?winnerDriverForename, " ",  ?winnerDriverSurname) as ?winnerDriverName) .
 
-            ?winnerConstructorId a type:Constructor ;
+            ?winnerConstructorId a ps:Constructor ;
                     pred:name ?winnerConstructorName .
 
-            ?fastestDriverId a type:Driver ;
+            ?fastestDriverId a ps:Driver ;
                     pred:forename ?fastestDriverForename ;
                     pred:surname ?fastestDriverSurname .
 
             BIND(CONCAT(?fastestDriverForename, " ",  ?fastestDriverSurname) as ?fastestDriverName) .
 
-            ?fastestConstructorId a type:Constructor ;
+            ?fastestConstructorId a ps:Constructor ;
                 pred:name ?fastestConstructorName .
 
         }}
@@ -93,10 +92,10 @@ def retrieve_races_by_name(race_name):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         SELECT ?raceId ?raceYear
         WHERE {{
-            ?raceId a type:Race ;
+            ?raceId a ps:Race ;
                 pred:name "{race_name}"^^xsd:string ;
                 pred:year ?raceYear .
         }}
@@ -110,48 +109,49 @@ def retrieve_race_by_id(race_id):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX ns: <{NS}race/>
         SELECT ?year ?round ?name ?date ?time ?raceUrl ?circuitId
         WHERE {{
-            ns:{race_id} a type:Race .
+            ns:{race_id} a ps:Race .
             
             OPTIONAL {{ ns:{race_id} pred:year ?year. }}
             OPTIONAL {{ ns:{race_id} pred:round ?round. }}
             OPTIONAL {{ ns:{race_id} pred:name ?name. }}
             OPTIONAL {{ ns:{race_id} pred:date ?date. }}
-            OPTIONAL {{ ns:{race_id} pred:time ?time. }}
-            OPTIONAL {{ ns:{race_id} pred:circuitId ?circuitId. }}
+            OPTIONAL {{ ns:{race_id} pred:totalDuration ?time. }}
+            OPTIONAL {{ ns:{race_id} pred:hasCircuit ?circuitId. }}
             OPTIONAL {{ ns:{race_id} pred:url ?raceUrl. }}
         }}
     """
 
     res = db.query(query)
+
     return res
 
 def retrieve_results_by_race_id(race_id):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX ns: <{NS}race/>
         SELECT ?driverId ?driverName ?constructorId ?constructorName ?position ?time ?laps
 
         WHERE {{
-            ?result a type:Result ;
-                pred:raceId ns:{race_id} ;
-                pred:driverId ?driverId ;
-                pred:constructorId ?constructorId ;
+            ?result a ps:Result ;
+                pred:participatedIn ns:{race_id} ;
+                pred:hasDriver ?driverId ;
+                pred:hasConstructor ?constructorId ;
                 pred:position ?position . 
             OPTIONAL {{ ?result pred:laps ?laps. }}
-            OPTIONAL {{ ?result pred:time ?time. }}
+            OPTIONAL {{ ?result pred:duration ?time. }}
 
-            ?driverId a type:Driver ;
+            ?driverId a ps:Driver ;
                 pred:forename ?driverForename ;
                 pred:surname ?driverSurname .
             BIND(CONCAT(?driverForename, " ", ?driverSurname) AS ?driverName)
 
-            ?constructorId a type:Constructor ;
+            ?constructorId a ps:Constructor ;
                 pred:name ?constructorName .
         }}
         LIMIT 3
@@ -164,25 +164,25 @@ def retrieve_results_by_race_id(race_id):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX ns: <{NS}race/>
         SELECT ?driverId ?driverName ?constructorId ?constructorName ?position ?time ?laps
 
         WHERE {{
-            ?result a type:Result ;
-                pred:raceId ns:{race_id} ;
-                pred:driverId ?driverId ;
-                pred:constructorId ?constructorId ;
+            ?result a ps:Result ;
+                pred:participatedIn ns:{race_id} ;
+                pred:hasDriver ?driverId ;
+                pred:hasConstructor ?constructorId ;
                 pred:position ?position . 
             OPTIONAL {{ ?result pred:laps ?laps. }}
-            OPTIONAL {{ ?result pred:time ?time. }}
+            OPTIONAL {{ ?result pred:duration ?time. }}
 
-            ?driverId a type:Driver ;
+            ?driverId a ps:Driver ;
                 pred:forename ?driverForename ;
                 pred:surname ?driverSurname .
             BIND(CONCAT(?driverForename, " ", ?driverSurname) AS ?driverName)
 
-            ?constructorId a type:Constructor ;
+            ?constructorId a ps:Constructor ;
                 pred:name ?constructorName .
         }}
         LIMIT 3
@@ -196,11 +196,11 @@ def delete_race(raceId):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
 
         DELETE {{ <{raceId}> ?p ?o }}
         WHERE {{
-            <{raceId}> a type:Race ;
+            <{raceId}> a ps:Race ;
                 ?p ?o .
         }}
         
@@ -215,12 +215,12 @@ def insert_race(circuitId, date, name, round, year):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX race: <{NS}race/>
 
         SELECT (MAX(xsd:int(STRAFTER(str(?raceId), "/race/"))) AS ?maxRaceId)
         WHERE {{
-            ?raceId a type:Race .
+            ?raceId a ps:Race .
         }}
     """
 
@@ -230,13 +230,13 @@ def insert_race(circuitId, date, name, round, year):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX race: <{NS}race/>
 
         INSERT DATA
         {{
-            race:{nextId} a type:Race ;
-                pred:circuitId <{circuitId}> ;
+            race:{nextId} a ps:Race ;
+                pred:hasCircuit <{circuitId}> ;
                 pred:date "{date}"^^xsd:string ;
                 pred:name "{name}"^^xsd:string ;
                 pred:round "{round}"^^xsd:int ;

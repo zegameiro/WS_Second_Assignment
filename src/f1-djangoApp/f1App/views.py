@@ -109,8 +109,10 @@ def drivers(request):
         results = search_drivers(query, page)
     else:
         results = get_all_drivers(page)
+
     if (results == []):
-        return redirect('/drivers')
+        return redirect('/drivers')  
+
     page_obj = {}
     page_obj["page"] = page
     for i,r in enumerate(results):

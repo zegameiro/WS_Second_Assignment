@@ -5,11 +5,11 @@ def retrieve_all_drivers(offset):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
 
         SELECT ?driverId ?number ?code ?forename ?surname ?nationality
         WHERE {{
-            ?driverId a type:Driver ;
+            ?driverId a ps:Driver ;
                 pred:forename ?forename ;
                 pred:surname ?surname ;
                 pred:nationality ?nationality ;
@@ -32,11 +32,11 @@ def retrieve_driver_by_id(driver_id):
     query = f"""
         PREFIX ns: <{NS}driver/>
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
 
         SELECT * 
         WHERE {{
-            ns:{driver_id} a type:Driver ;
+            ns:{driver_id} a ps:Driver ;
                 pred:forename ?forename ;
                 pred:surname ?surname ;
                 pred:dob ?dob ;
@@ -55,11 +55,11 @@ def retrieve_drivers_by_regex(query, offset):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
 
         SELECT ?driverId ?forename ?surname ?nationality
         WHERE {{
-            ?driverId a type:Driver ;
+            ?driverId a ps:Driver ;
                 pred:forename ?forename ;
                 pred:surname ?surname ;
                 pred:nationality ?nationality
@@ -77,18 +77,18 @@ def retrieve_driver_race_wins(driver_id):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX ns: <{NS}driver/>
         SELECT ?raceId ?raceName ?points ?raceYear
         WHERE {{
             
-            ?qualifyingId a type:Result ;
-                pred:driverId ns:{driver_id};
-                pred:position "1"^^xsd:string ;
-                pred:raceId ?raceId ;
-                pred:points ?points .
+            ?resultId a ps:Result ;
+                pred:hasDriver ns:{driver_id};
+                pred:position 1 ;
+                pred:participatedIn ?raceId ;
+                pred:obtainedPoints ?points .
             
-            ?raceId a type:Race ;
+            ?raceId a ps:Race ;
                 pred:name ?raceName ;
                 pred:year ?raceYear .
         }}

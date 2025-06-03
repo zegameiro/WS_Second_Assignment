@@ -1,10 +1,9 @@
 @prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <"http://www.w3.org/TR/owl-features#"> .
+@prefix owl: <http://www.w3.org/TR/owl-features#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-@prefix pred: <http://pitstop.org/pred/> .
 @prefix ps: <http://pitstop.org/> .
+@prefix pred: <http://pitstop.org/pred/> .
 
 ############################# HEADER #############################
 
@@ -680,6 +679,17 @@ ps:Race owl:equivalentClass [
             rdf:type owl:Restriction ;
             owl:onProperty pred:url ; 
             owl:someValuesFrom xsd:anyURI
+        ]
+    )
+] .
+
+ps:Result owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:milliseconds;
+            owl:someValuesFrom xsd:long 
         ]
     )
 ] .
