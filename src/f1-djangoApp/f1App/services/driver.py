@@ -1,7 +1,31 @@
 from f1App.constants import *
 from f1App.repositories.driver import *
+from SPARQLWrapper import SPARQLWrapper, JSON
 
 import json
+
+def get_driver_image(name):
+    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+        
+    query = f"""
+        SELECT ?item ?itemLabel ?image WHERE {{
+            ?item rdfs:label "{name}"@en.
+            ?item wdt:P18 ?image.
+        }}
+        LIMIT 1
+    """
+
+    sparql.setQuery(query)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    images = []
+    for result in results["results"]["bindings"]:
+        image = result["image"]["value"]
+        if image:
+            return image
+    
+    return "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
 
 def get_all_drivers(page):
     """Get all the drivers"""
@@ -26,7 +50,7 @@ def get_all_drivers(page):
             
         if 'code' in binding.keys():
             driver['code'] = binding['code']['value']
-        
+
         results.append(driver)
 
     return results
@@ -53,6 +77,13 @@ def get_driver_by_id(driver_id):
         driver['number'] = binding['number']['value']
     if 'code' in binding.keys():
         driver['code'] = binding['code']['value']
+
+    if 'image' in binding:
+        driver['image'] = binding['image']['value']
+    else:
+        image_url = get_driver_image(f"{driver['forename']} {driver['surname']}")
+        insert_driver_image_service(driver_id, image_url)
+        driver['image'] = image_url
 
     return driver
 
@@ -99,3 +130,6 @@ def get_driver_qualifying(driver_id):
 
     return results
         
+def insert_driver_image_service(driver_id, url):
+    res = insert_driver_image(driver_id, url)
+    return res
