@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-6">
+  {% if driver %}
+    <div class="flex flex-col justify-center items-center gap-10">
+      <h1 class="flex gap-2 items-center text-2xl font-semibold">
+        <i class="text-4xl"><!-- Add motorcycle helmet icon via <svg> or font-awesome --></i>
+        Driver Details
+      </h1>
+
+      <div class="flex flex-col gap-4">
+        <!-- Personal Details Card -->
+        <div class="flex flex-col gap-10 border-2 border-error shadow-xl p-6 rounded-2xl">
+          <h1 class="text-2xl font-bold">Personal Details</h1>
+          <div class="divider divider-error my-[-20px]"></div>
+          <div class="flex justify-around items-center w-full">
+            <div class="flex flex-col text-xl space-y-3">
+              <p class="flex gap-4">
+                <span class="font-semibold">First Name</span>
+                {{ driver.forename }}
+              </p>
+              <p class="flex gap-4">
+                <span class="font-semibold">Last Name</span>
+                {{ driver.surname }}
+              </p>
+              <p class="flex gap-4">
+                <span class="font-semibold">Date of Birth</span>
+                {{ driver.dob }}
+              </p>
+
+              {% if driver.code %}
+                <span class="flex gap-4">
+                  <strong>Code</strong> {{ driver.code }}
+                </span>
+              {% endif %}
+
+              {% if driver.number %}
+                <span class="flex gap-4">
+                  <strong>Number</strong> {{ driver.number }}
+                </span>
+              {% endif %}
+
+              <a
+                class="badge badge-soft badge-primary text-lg"
+                target="_blank"
+                href="{{ driver.url }}"
+              >
+                {{ driver.url }}
+              </a>
+            </div>
+
+            <div class="divider divider-horizontal"></div>
+
+            <div class="card bg-base-100 border-2 h-max border-white shadow-sm w-max p-1">
+              <figure>
+                <img
+                  src="{{flag}}"
+                  alt="Country Flag"
+                  class="h-20 w-20"
+                />
+              </figure>
+              <div class="card-body">
+                <h2 class="text-xl text-center justify-center">
+                  {{ driver.nationality }}
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wins Section -->
+        <div class="card gap-10 items-center border-2 border-error shadow-xl p-2 rounded-2xl">
+          <div class="card-body">
+            <h1 class="card-title text-2xl">Races Won</h1>
+            <div class="divider divider-error"></div>
+
+            {% if wins %}
+              <div class="grid grid-cols-3 gap-y-6 gap-x-6 overflow-y-auto w-full max-h-[30rem]">
+                {% for win in wins %}
+                  <a
+                    class="duration-200 transition hover:scale-90"
+                    href="{% url "race_profile" win.id %}" 
+                  >
+                    <div class="flex flex-col items-center text-warning text-xl border-2 border-warning p-2 space-y-2 rounded-lg">
+                      <span class="badge badge-warning text-xl">
+                        {{ win.raceName }} {{ win.raceYear }}
+                      </span>
+                      <span class="flex items-center gap-1">
+                        <i class="icon-trophy"></i> Points {{ win.points }}
+                      </span>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="flex gap-1 items-center text-xl text-warning">
+                <i class="icon-sad"></i> This driver doesn't have any wins yet
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <h1 class="text-4xl">No data found</h1>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-6">
+  <h1 class="text-3xl font-bold flex items-center gap-2 pb-6">
+    <i class="fa-solid fa-flag-checkered text-lg"></i> {{raceName}}
+  </h1>
+  <div class="flex w-full justify-center">
+      <div class="grid xl:grid-cols-4 lg:grid-cols-3 gap-10">
+        {% for race in races %}
+          <div
+            class="card w-78 bg-black border-1 border-error shadow-sm"
+          >
+            <div class="card-body">
+              <h2 class="card-title">
+                <FaCalendarAlt /> {{race.raceYear}}
+              </h2>
+              <div class="justify-end card-actions">
+                  <a class="btn btn-error" href="{% url "race_profile" race.id %}">
+                    See More <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  </a>
+                <form method="POST" action="{% url 'delete_race' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="raceId" value="{{ race.raceId }}">
+                    <button type="submit" class="btn btn-error">
+                        <i class="fa-solid fa-trash-can text-xl"></i>
+                    </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
+</div>
+{% endblock %}

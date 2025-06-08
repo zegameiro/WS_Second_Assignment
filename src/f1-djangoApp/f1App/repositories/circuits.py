@@ -5,14 +5,14 @@ def retrieve_circuit_by_race_id(race_id):
     
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX ns: <{NS}race/>
         SELECT ?name ?location ?country ?lat ?lng ?alt ?url
         WHERE {{
-            ns:{race_id} a type:Race ;
-                pred:circuitId ?circuitId .
+            ns:{race_id} a ps:Race ;
+                pred:hasCircuit ?circuitId .
 
-            ?circuitId a type:Circuit ;
+            ?circuitId a ps:Circuit ;
                 pred:name ?name ;
                 pred:location ?location ;
                 pred:country ?country ;
@@ -30,10 +30,10 @@ def retrieve_all_circuits():
     
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         SELECT ?circuitId ?name
         WHERE {{
-            ?circuitId a type:Circuit ;
+            ?circuitId a ps:Circuit ;
                 pred:name ?name .
         }}
         ORDER BY ?name

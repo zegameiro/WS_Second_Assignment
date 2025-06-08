@@ -33,8 +33,8 @@ def get_all_drivers(page):
     offset = (page - 1) * LIMIT
 
     res = retrieve_all_drivers(offset)
-    data = json.loads(res)
 
+    data = json.loads(res)
     results = []
 
     for binding in data['results']['bindings']:

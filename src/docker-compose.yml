@@ -1,27 +1,4 @@
 services:
-  vite:
-    build:
-      context: f1-frontend
-      dockerfile: .docker/dockerfile
-    ports:
-      - 5173:5173
-    environment:
-      - VITE_BASE_URL=http://localhost:8000
-    volumes:
-      - ./f1-frontend/:/vite_app/
-      - /vite_app/node_modules
-  
-  django:
-    build:
-      context: f1-backend
-      dockerfile: .docker/dockerfile
-    ports:
-      - 8000:8000
-    environment:
-      - GRAPH_DB_ENDPOINT=http://graphDB:7200
-      - REPO_NAME=f1-pitstop
-    volumes:
-      - ./f1-backend/:/f1-confia/
   
   graphDB:
     image: ontotext/graphdb:10.8.3

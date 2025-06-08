@@ -1,0 +1,42 @@
+{% block content %}
+<dialog id="my_modal_1" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Add a new Race</h3>
+
+    <form method="POST" action="{% url 'add_race' %}">
+      {% csrf_token %}
+
+      <fieldset class="fieldset bg-base-200 border border-base-300 p-4 rounded-box">
+        <legend class="fieldset-legend">Race Details</legend>
+
+        <label class="fieldset-label">Name</label>
+        <input type="text" name="name" class="input w-full" placeholder="Name of the Race" required>
+
+        <label class="fieldset-label">Date</label>
+        <input type="date" name="date" class="input w-full" required>
+
+        <label class="fieldset-label">Year</label>
+        <input type="number" name="year" class="input w-full" placeholder="Year of the race" required>
+
+        <label class="fieldset-label">Round</label>
+        <input type="number" name="round" class="input w-full" placeholder="Round of the race" required>
+
+        <legend class="fieldset-label">Circuit</legend>
+        <select name="circuit_id" class="select w-full" required>
+          <option value="" disabled selected>Choose a Circuit</option>
+          {% for circuit in circuits %}
+            <option value="{{ circuit.id }}">{{ circuit.name }}</option>
+          {% endfor %}
+        </select>
+      </fieldset>
+
+      <div class="modal-action">
+        <div class="flex gap-2">
+          <button type="submit" class="btn btn-outline btn-success">Add Race</button>
+          <button type="button" class="btn btn-soft btn-error" onclick="my_modal_1.close()">Close</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</dialog>
+{% endblock %}

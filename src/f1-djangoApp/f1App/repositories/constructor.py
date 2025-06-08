@@ -6,9 +6,9 @@ def retrieve_all_constructors(offset):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         SELECT ?c ?name ?nationality ?url WHERE {{
-            ?c a type:Constructor ;
+            ?c a ps:Constructor ;
             pred:name ?name ;
             pred:nationality ?nationality ;
             pred:url ?url .
@@ -26,9 +26,9 @@ def retrieve_constructors_by_nationality():
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         SELECT ?nationality (GROUP_CONCAT(?name; separator=", ") AS ?constructors) WHERE {{
-            ?c a type:Constructor ;
+            ?c a ps:Constructor ;
             pred:name ?name ;
             pred:nationality ?nationality .
         }}
@@ -44,9 +44,9 @@ def retrieve_constructors_by_id(constructor_id):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         SELECT ?name ?nationality ?url WHERE {{
-            <{constructor_id}> a type:Constructor ;
+            <{constructor_id}> a ps:Constructor ;
             pred:name ?name ;
             pred:nationality ?nationality ;
             pred:url ?url .

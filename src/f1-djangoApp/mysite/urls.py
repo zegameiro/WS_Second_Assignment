@@ -19,8 +19,23 @@ from django.urls import include, path
 from f1App import views
 
 urlpatterns = [
+    path("__reload__/", include("django_browser_reload.urls")),
     path('admin/', admin.site.urls),
     path("", views.index, name="index"),
+    # ========Races========
     path("races", views.races, name="races"),
-    path("__reload__/", include("django_browser_reload.urls")),
+    path("races/new",views.add_race,name="add_race"),
+    path('races/<str:name>', views.race_year, name='race_year'),
+    path("races/id/<int:id>",views.race_profile, name='race_profile'),
+    path("races/delete/",views.race_delete, name="delete_race"),
+    # ========Drivers======
+    path('drivers', views.drivers, name='drivers'),
+    path('drivers/<int:id>', views.driver_profile, name='driverProfile'),
+    # ========Constructors========
+    path('constructors',views.constructors, name="constructors"),
+    # ========Seasons=============
+    path('seasons',views.seasons,name="seasons"),
+    path('seasons/<int:year>', views.season_profile, name="seasonsProfile"),
+    path('seasons/add',views.add_season,name="add_season"),
+    path('seasons/delete/<int:year>',views.delete_season,name="delete_season")
 ]

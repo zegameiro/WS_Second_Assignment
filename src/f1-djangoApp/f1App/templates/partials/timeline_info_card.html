@@ -1,0 +1,18 @@
+<div class="w-full min-w-50">
+    <h1 class="text-red-400 font-bold text-2xl flex items-center gap-1"><FaFlagCheckered />{{racename}}</h1>
+    <div class="divider my-[-3px]"></div>
+    <div class="flex justify-around">
+        <div class="w-1/2 text-lg">
+        <div class="font-bold flex items-center gap-1 text-green-400"><FaClock/>Fastest Lap</div>
+        <div class="flex items-center gap-1"><GiFullMotorcycleHelmet />{{fastLap.driverName}}</div>
+        <div class="flex items-center gap-1"><GiF1Car class="text-xl" />{{fastLap.constructorName}}</div>
+        <div class="flex items-center gap-1"><FaClock/>{{fastLap.time}}</div>
+        </div>
+        <div class="w-1/2 text-lg">
+        <div class="font-bold flex items-center gap-1 text-yellow-300"><FaTrophy/>Race Winner</div>
+        <div class="flex items-center gap-1"><GiFullMotorcycleHelmet />{{winner.driverName}}</div>
+        <div class="flex items-center gap-1"><GiF1Car class="text-xl" />{{winner.constructorName}}</div>
+        <div class="flex items-center gap-1"><FaClock/>{{winner.fastestLap}}</div>
+        </div>
+    </div>
+</div>
