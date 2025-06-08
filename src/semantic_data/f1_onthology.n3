@@ -1,9 +1,26 @@
-@prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/TR/owl-features#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix ps: <http://pitstop.org/> .
 @prefix pred: <http://pitstop.org/pred/> .
+
+# CONSTRUCT {
+#     ?seasonUri a ps:Season
+# }
+#     WHERE {
+#     ?seasonUri pred:url ?url
+# 
+#     # Check if the URL matches one of the season patterns
+#     FILTER (
+#         REGEX(STR(?url), "http://en.wikipedia.org/wiki/[0-9]{4}_Formula_One_season", "i") ||
+#         REGEX(STR(?url), "http://en.wikipedia.org/wiki/[0-9]{4}_Formula_One_World_Championship", "i")
+#     )
+# 
+#     FILTER NOT EXISTS {
+#         ?seasonUri rdf:type ?anyType
+#     }
+# }
 
 ############################# HEADER #############################
 
@@ -34,6 +51,8 @@ ps:DriverStanding rdf:type owl:Class ;
 
 ps:ConstructorStanding rdf:type owl:Class ;
     rdfs:subClassOf ps:Standing .
+
+ps:DriverStanding owl:disjointWith ps:ConstructorStanding .
 
 ############################# SHARED PROPERTIES #############################
 
@@ -370,11 +389,6 @@ ps:Circuit owl:equivalentClass [
             owl:onProperty pred:alt ; 
             owl:someValuesFrom xsd:integer 
         ]
-        [ 
-            rdf:type owl:Restriction ;
-            owl:onProperty pred:url ; 
-            owl:someValuesFrom xsd:anyURI 
-        ]
     )
 ] .
 
@@ -415,6 +429,29 @@ ps:Standing owl:equivalentClass [
     )
 ] .
 
+ps:DriverStanding owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        ps:Standing
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:hasDriver ;
+            owl:someValuesFrom ps:Driver
+        ]
+    )
+] .
+
+ps:ConstructorStanding owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:intersectionOf (
+        ps:Standing
+        [
+            rdf:type owl:Restriction ;
+            owl:onProperty pred:hasConstructor ;
+            owl:someValuesFrom ps:Constructor
+        ]
+    )
+] .
 
 ps:ConstructorStanding owl:equivalentClass [
     rdf:type owl:Class;
@@ -480,11 +517,6 @@ ps:Constructor owl:equivalentClass [
             rdf:type owl:Restriction ;
             owl:onProperty pred:nationality ; 
             owl:someValuesFrom xsd:string 
-        ]
-        [
-            rdf:type owl:Restriction ;
-            owl:onProperty pred:url ; 
-            owl:someValuesFrom xsd:anyURI 
         ]
     )
 ] .
@@ -570,11 +602,6 @@ ps:Driver owl:equivalentClass [
             rdf:type owl:Restriction ;
             owl:onProperty pred:nationality ; 
             owl:someValuesFrom xsd:string
-        ]
-        [
-            rdf:type owl:Restriction ;
-            owl:onProperty pred:url ; 
-            owl:someValuesFrom xsd:anyURI
         ]
     )
 ] .
@@ -675,11 +702,6 @@ ps:Race owl:equivalentClass [
             owl:onProperty pred:totalDuration ; 
             owl:someValuesFrom xsd:string
         ]
-        [
-            rdf:type owl:Restriction ;
-            owl:onProperty pred:url ; 
-            owl:someValuesFrom xsd:anyURI
-        ]
     )
 ] .
 
@@ -690,17 +712,6 @@ ps:Result owl:equivalentClass [
             rdf:type owl:Restriction ;
             owl:onProperty pred:milliseconds;
             owl:someValuesFrom xsd:long 
-        ]
-    )
-] .
-
-ps:Season owl:equivalentClass [
-    rdf:type owl:Class;
-    owl:intersectionOf (
-        [
-            rdf:type owl:Restriction ;
-            owl:onProperty pred:url ; 
-            owl:someValuesFrom xsd:anyURI
         ]
     )
 ] .

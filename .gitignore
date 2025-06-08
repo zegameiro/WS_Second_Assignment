@@ -414,5 +414,6 @@ thumb
 sketch
 
 tailwindcss-linux-x64
+graphdb/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django,node,react

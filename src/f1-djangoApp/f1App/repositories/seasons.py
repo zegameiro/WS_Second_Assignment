@@ -5,13 +5,12 @@ def retrieve_all_seasons(offset):
     """Retrieve all seasons from the database with pagination."""
 
     query = f"""
-        PREFIX ns: <{NS}>
+        PREFIX ps: <{NS}>
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
 
         SELECT ?year ?url
         WHERE {{
-            ?year a type:Season ;
+            ?year a ps:Season ;
                 pred:url ?url
         }}
         ORDER BY DESC(?year)
@@ -27,20 +26,19 @@ def get_drivers_podium(year):
     """Retrive the drivers podium"""
 
     query = f"""
-        PREFIX ns: <{NS}>
+        PREFIX ps: <{NS}>
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
 
         SELECT ?driverId ?driverName (SUM(?points) AS ?totalPoints)
         WHERE {{
-            ?raceId a type:Race ;
+            ?raceId a ps:Race ;
                 pred:name ?raceName ;
-                pred:year "{year}"^^xsd:int .
-            ?result a type:Result ;
-                pred:raceId ?raceId ;
-                pred:driverId ?driverId ;
-                pred:points ?points .
-            ?driverId a type:Driver ;
+                pred:year {year} .
+            ?result a ps:Result ;
+                pred:participatedIn ?raceId ;
+                pred:hasDriver ?driverId ;
+                pred:obtainedPoints ?points .
+            ?driverId a ps:Driver ;
                 pred:forename ?forename ;
                 pred:surname ?surname .
 
@@ -59,20 +57,19 @@ def get_constructors_podium(year):
     """Retrive the constructors podium"""
 
     query = f"""
-        PREFIX ns: <{NS}>
+        PREFIX ps: <{NS}>
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
 
         SELECT ?constructorId ?constructorName (SUM(?points) AS ?totalPoints)
         WHERE {{
-            ?raceId a type:Race ;
+            ?raceId a ps:Race ;
                 pred:name ?raceName ;
-                pred:year "{year}"^^xsd:int .
-            ?result a type:Result ;
-                pred:raceId ?raceId ;
-                pred:constructorId ?constructorId ;
-                pred:points ?points .
-            ?constructorId a type:Constructor ;
+                pred:year {year} .
+            ?result a ps:Result ;
+                pred:participatedIn ?raceId ;
+                pred:hasConstructor ?constructorId ;
+                pred:obtainedPoints ?points .
+            ?constructorId a ps:Constructor ;
                 pred:name ?constructorName .
 
         }}
@@ -90,15 +87,14 @@ def delete_season(year):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX season: <{NS}season/>
 
         DELETE {{ season:{year} ?p ?o }}
         WHERE {{
-            season:{year} a type:Season ;
+            season:{year} a ps:Season ;
                 ?p ?o .
         }}
-        
     """
 
     res = db.update(query)
@@ -110,12 +106,12 @@ def insert_season(year, url):
 
     query = f"""
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
+        PREFIX ps: <{NS}>
         PREFIX season: <{NS}season/>
 
         INSERT DATA
         {{
-            season:{year} a type:Season ;
+            season:{year} a ps:Season ;
                 pred:url <{url}> .
         }}
         

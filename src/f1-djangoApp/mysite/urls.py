@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from f1App import views
+from f1App import views, inference_rules
 
 urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
@@ -39,3 +39,5 @@ urlpatterns = [
     path('seasons/add',views.add_season,name="add_season"),
     path('seasons/delete/<int:year>',views.delete_season,name="delete_season")
 ]
+
+inference_rules.apply_inference_rules()
