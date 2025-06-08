@@ -59,7 +59,15 @@
 
       <!-- Right Column -->
       <div class="flex flex-col gap-7 w-full">
-        <h1 class="text-2xl font-bold">Circuit Information</h1>
+        <div class="flex flex-row justify-between items-center">
+          <h1 class="text-2xl font-bold">Circuit Information</h1>
+          <a href="/circuits/{{ circuit.id }}" class="duration-200 transition hover:scale-105">
+            <button class="btn btn-sm btn-info text-lg">
+              See more
+              <i class="fa-solid fa-location-dot"></i>
+            </button>
+          </a>
+        </div>
         <div class="divider divider-error my-[-20px]"></div>
         <div class="flex items-center w-full">
           <div class="flex flex-col text-xl space-y-3">

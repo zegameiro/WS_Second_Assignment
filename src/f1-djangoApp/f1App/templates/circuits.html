@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-6">
+    <span class="flex items-center justify-between text-3xl">
+        <span class="flex items-center justify-center gap-2">
+					<i class="fa-solid fa-map-location-dot"></i>
+					<h1 class="font-bold">Circuits</h1>
+        </span>
+      </span>
+    <div class="flex flex-col items-center w-full">
+      <div class="pt-4 overflow-x-auto w-full">
+        <table class="table table-zebra text-white">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Country</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for circuit in circuits %}
+                <tr class="text-lg">
+                    <th>{{circuit.index}}</th>
+                    <td>{{circuit.name}}</td>
+                    <td>{{circuit.location}}</td>
+                    <td>
+                        <img
+                            src={{circuit.flag}}
+                            alt="Country Flag"
+                            class="h-10 w-10"
+                        />
+                    </td>
+                    <td>
+                        <a href="circuits/{{circuit.id}}">
+                            <button class="btn btn-soft btn-info btn-circle">
+                                <i class="fa-solid fa-magnifying-glass-plus text-xl"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+      <div class="join justify-center w-full pt-4">
+        <!-- Previous Button -->
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" 
+                class="join-item btn btn-soft btn-error"
+            >
+            «
+            </a>
+        {% else %}
+            <button class="join-item btn btn-soft">
+            «
+            </button>
+        {% endif %}
+
+        <!-- Current Page Button -->
+        <p class="join-item btn btn-error">
+            Page {{ page_obj.page }}
+        </p>
+
+        <!-- Next Button -->
+        <a href="?page={{ page_obj.next_page_number }}" 
+            class="join-item btn btn-soft btn-error"
+        >
+        »
+        </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

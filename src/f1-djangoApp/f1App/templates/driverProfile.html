@@ -8,7 +8,7 @@
         Driver Details
       </h1>
 
-      <div id="card" class="h-card flex flex-col gap-4">
+      <div id="card" class="h-card flex w-1/2 flex-col gap-4">
         <!-- Personal Details Card -->
         <div class="flex flex-col gap-10 border-2 border-error shadow-xl p-6 rounded-2xl">
           <div class="flex justify-between items-center">
@@ -50,6 +50,16 @@
               >
                 {{ driver.url }}
               </a>
+            </div>
+
+            <div class="divider divider-horizontal"></div>
+
+            <div class="card bg-base-100 border-2 h-[100%] border-white shadow-sm w-max p-1">
+              {% if driver.image %}
+                <div class="flex justify-center">
+                  <img src="{{ driver.image }}" alt="Driver Image" width="180" class="rounded-full object-cover">
+                </div>
+              {% endif %}
             </div>
 
             <div class="divider divider-horizontal"></div>

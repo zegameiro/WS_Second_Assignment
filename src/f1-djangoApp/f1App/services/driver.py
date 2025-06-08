@@ -25,7 +25,7 @@ def get_driver_image(name):
         if image:
             return image
     
-    return "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+    return "https://wallpapers.com/images/hd/default-profile-picture-placeholder-03dc7pgpy5gkq3zw.png"
 
 def get_all_drivers(page):
     """Get all the drivers"""

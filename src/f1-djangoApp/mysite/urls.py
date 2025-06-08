@@ -37,7 +37,10 @@ urlpatterns = [
     path('seasons',views.seasons,name="seasons"),
     path('seasons/<int:year>', views.season_profile, name="seasonsProfile"),
     path('seasons/add',views.add_season,name="add_season"),
-    path('seasons/delete/<int:year>',views.delete_season,name="delete_season")
+    path('seasons/delete/<int:year>',views.delete_season,name="delete_season"),
+    # ========Circuits========
+    path('circuits', views.circuits, name='circuits'),
+    path('circuits/<int:id>', views.circuit_profile, name='circuitProfile'),
 ]
 
 inference_rules.apply_inference_rules()

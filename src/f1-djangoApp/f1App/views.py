@@ -2,12 +2,12 @@ import json
 from django.shortcuts import redirect, render
 from django.http import Http404, HttpResponse
 from django.template import loader
-from f1App.nacionality import flagCountries
+from f1App.nacionality import flagCountries, countryFlags
 import re
 
 from django.views.decorators.csrf import csrf_protect
 
-from f1App.services.circuits import get_all_circuits, get_circuit_by_race_id
+from f1App.services.circuits import get_all_circuits, get_circuit_by_race_id, get_circuit_by_id
 from f1App.services.constructors import get_all_constructors
 from f1App.services.driver import get_all_drivers, get_driver_by_id, get_driver_qualifying, search_drivers
 from f1App.services.races import delete_race_service, get_all_races_by_date, get_all_races_by_year, get_race_by_id, get_races_by_name, get_results_by_race_id, insert_race_service
@@ -69,6 +69,8 @@ def race_profile(request,id):
     results = get_results_by_race_id(id)
     for r in results:
         r["id"] = int(r["driverId"].split("/driver/")[1])
+
+    circuit["id"] = circuit["circuitId"].split("/circuit/")[1]
 
     context = {
         "race":race,
@@ -136,7 +138,6 @@ def driver_profile(request,id):
     flag = flagCountries[results["nationality"]]
     for r in wins:
         r["id"] = r["raceId"].split("race/")[1]
-
     context = {
         "driver":results,
         "wins":wins,
@@ -230,3 +231,44 @@ def delete_season(request,year):
     if request.method == "POST":
         delete_season_service(year)
     return redirect('seasons')
+
+# |==========================|
+# |       Circuits           |
+# |==========================|
+
+def circuits(request):
+    page = int(request.GET.get('page', 1))
+    results = get_all_circuits(page)
+    if (results == []):
+        return redirect('/circuits')
+    page_obj = {}
+    page_obj["page"] = page
+    if(page > 1):
+        page_obj["has_previous"] = True
+        page_obj["previous_page_number"] = page-1
+    page_obj["next_page_number"] = page+1
+    for i,r in enumerate(results):
+        r["id"] = (r["circuitId"].split("/circuit/")[1])
+        r["index"] = (page-1) * 20 + (i+1)
+        r["flag"] = countryFlags[r["country"]]
+    context ={
+        "circuits":results,
+        "page_obj": page_obj
+    }
+    return render(request,template_name="circuits.html",context=context)
+
+def circuit_profile(request, id):
+    circuit = get_circuit_by_id(id)
+    
+    if (circuit == None):
+        return redirect('/circuits')
+    
+    flag = countryFlags[circuit["country"]]
+    context = {
+        "circuit": circuit,
+        "flag": flag
+    }
+
+    template = loader.get_template("circuitProfile.html")
+    return render(request, template_name="circuitProfile.html", context=context)
+    

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-6">
+  {% if circuit %}
+    <div class="flex flex-col justify-center items-center gap-10">
+      <h1 class="flex gap-2 items-center text-2xl font-semibold">
+        <i class="fa-solid fa-map-location-dot"></i>
+        Circuit Information
+      </h1>
+
+      <div id="card" class="h-card flex flex-col w-[90vw] justify-center items-center gap-4">
+        <div class="flex flex-col gap-10 border-2 border-error shadow-xl p-6 rounded-2xl">
+          <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Details</h1>
+            <button class="btn btn-error" onclick="copySection()">Copy to Clipboard</button>
+          </div>
+          <div class="divider divider-error my-[-20px]"></div>
+          <div class="flex justify-around items-center w-full">
+            <div class="flex flex-col text-xl space-y-3">
+              <p class="flex gap-4">
+                <span class="font-semibold">Name</span>
+                <span class="p-name">{{ circuit.name }}</span>
+              </p>
+              <p class="flex gap-4">
+                <span class="font-semibold">Location</span>
+                <span>{{ circuit.location }}</span>
+              </p>
+              <p class="flex gap-4">
+                <span class="font-semibold">Country</span>
+                <span class="p-country">{{ circuit.country }}</span>
+              </p>
+
+              {% if circuit.lat and circuit.lng %}
+                <p class="flex gap-4">
+                  <span class="font-semibold">Coordinates</span>
+                  <span>{{ circuit.lat }}, {{ circuit.lng }}</span>
+                </p>
+              {% endif %}
+
+              {% if circuit.alt %}
+                <p class="flex gap-4">
+                  <span class="font-semibold">Altitude</span>
+                  <span>{{ circuit.alt }}</span>
+                </p>
+              {% endif %}
+
+              <a
+                class="u-url badge badge-soft badge-primary text-lg"
+                target="_blank"
+                href="{{ circuit.url }}"
+              >
+                {{ circuit.url }}
+              </a>
+            </div>
+
+            <div class="divider divider-horizontal"></div>
+
+            <div class="card bg-base-100 border-2 h-[100%] bg-white border-white shadow-sm w-max p-1">
+              {% if circuit.image %}
+                <div class="flex justify-center">
+                  <img src="{{ circuit.image }}" alt="Circuit Image" width="260">
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="divider divider-horizontal"></div>
+
+            <div class="card bg-base-100 border-2 h-[100%] border-white shadow-sm w-max p-1">
+              <figure>
+                <img
+                  class="h-20 w-20"
+                  src="{{flag}}"
+                  />
+              </figure>
+              <div class="card-body">
+                <h2 class="p-category text-xl text-center justify-center">
+                  {{ circuit.country }}
+                </h2>
+              </div>
+            </div>
+          </div>
+					<div class="divider divider-error my-[-20px]"></div>
+					<div class="flex flex-col gap-2">
+						<span class="text-xl font-bold">Description</span>
+						<p class="text-lg">{{ circuit.comment }}</p>
+					</div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <h1 class="text-4xl">No data found</h1>
+  {% endif %}
+</div>
+<script>
+  function copySection() {
+    const content = document.getElementById("card").outerHTML;  // get HTML with tags/classes
+    navigator.clipboard.writeText(content)
+      .then(() => alert("Copied!"))
+      .catch(err => alert("Failed to copy: " + err));
+  }
+</script>
+{% endblock %}
