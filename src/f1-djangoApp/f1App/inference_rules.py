@@ -14,7 +14,7 @@ def apply_inference_rules():
             ?s pred:hasDriver ?c .
         }}
     """
-    res = db.update(query)
+    db.update(query)
     
     query = f"""
         PREFIX pred: <{PRED}>
@@ -27,7 +27,7 @@ def apply_inference_rules():
             ?s pred:hasConstructor ?c .
         }}
     """
-    res = db.update(query)
+    db.update(query)
 
     query = f"""
         PREFIX pred: <{PRED}>
@@ -42,4 +42,21 @@ def apply_inference_rules():
             }}
         }}
     """
-    res = db.update(query)
+    db.update(query)
+
+    query = f"""
+        PREFIX pred: <{PRED}>
+        PREFIX ps: <{NS}>
+        INSERT {{
+            ?circuit pred:numberOfRaces ?count .
+        }}
+        WHERE {{
+            SELECT ?circuit (COUNT(?race) AS ?count)
+                WHERE {{
+                    ?race a ps:Race ;
+                        pred:hasCircuit ?circuit .
+                }}
+            GROUP BY ?circuit
+        }}
+    """
+    db.update(query)
