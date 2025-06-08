@@ -78,7 +78,12 @@ def get_driver_by_id(driver_id):
     if 'code' in binding.keys():
         driver['code'] = binding['code']['value']
 
-    driver["image"] = get_driver_image(f"{driver['forename']} {driver['surname']}")
+    if 'image' in binding:
+        driver['image'] = binding['image']['value']
+    else:
+        image_url = get_driver_image(f"{driver['forename']} {driver['surname']}")
+        insert_driver_image_service(driver_id, image_url)
+        driver['image'] = image_url
 
     return driver
 

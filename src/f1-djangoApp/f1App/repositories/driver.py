@@ -45,6 +45,7 @@ def retrieve_driver_by_id(driver_id):
 
             OPTIONAL {{ ns:{driver_id} pred:number ?number . }}
             OPTIONAL {{ ns:{driver_id} pred:code ?code . }}
+            OPTIONAL {{ ns:{driver_id} pred:image ?image . }}
         }}
     """
 
@@ -96,4 +97,20 @@ def retrieve_driver_race_wins(driver_id):
     """
 
     res = db.query(query)
+    return res
+
+def insert_driver_image(driver_id, url):
+    query = f"""
+        PREFIX pred: <{PRED}>
+        PREFIX ns: <{NS}driver/>
+
+        INSERT {{
+            ns:{driver_id} pred:image "{url}" .
+        }}
+        WHERE {{
+            ns:{driver_id} a ?type .
+        }}
+    """
+
+    res = db.update(query)
     return res
