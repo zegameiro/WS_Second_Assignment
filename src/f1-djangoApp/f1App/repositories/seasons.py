@@ -5,13 +5,12 @@ def retrieve_all_seasons(offset):
     """Retrieve all seasons from the database with pagination."""
 
     query = f"""
-        PREFIX ns: <{NS}>
+        PREFIX ps: <{NS}>
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
 
         SELECT ?year ?url
         WHERE {{
-            ?year a type:Season ;
+            ?year a ps:Season ;
                 pred:url ?url
         }}
         ORDER BY DESC(?year)
@@ -27,20 +26,19 @@ def get_drivers_podium(year):
     """Retrive the drivers podium"""
 
     query = f"""
-        PREFIX ns: <{NS}>
+        PREFIX ps: <{NS}>
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
 
         SELECT ?driverId ?driverName (SUM(?points) AS ?totalPoints)
         WHERE {{
-            ?raceId a type:Race ;
+            ?raceId a ps:Race ;
                 pred:name ?raceName ;
                 pred:year "{year}"^^xsd:int .
-            ?result a type:Result ;
+            ?result a ps:Result ;
                 pred:raceId ?raceId ;
                 pred:driverId ?driverId ;
                 pred:points ?points .
-            ?driverId a type:Driver ;
+            ?driverId a ps:Driver ;
                 pred:forename ?forename ;
                 pred:surname ?surname .
 
@@ -59,20 +57,19 @@ def get_constructors_podium(year):
     """Retrive the constructors podium"""
 
     query = f"""
-        PREFIX ns: <{NS}>
+        PREFIX ps: <{NS}>
         PREFIX pred: <{PRED}>
-        PREFIX type: <{TYPE}>
 
         SELECT ?constructorId ?constructorName (SUM(?points) AS ?totalPoints)
         WHERE {{
-            ?raceId a type:Race ;
+            ?raceId a ps:Race ;
                 pred:name ?raceName ;
                 pred:year "{year}"^^xsd:int .
-            ?result a type:Result ;
+            ?result a ps:Result ;
                 pred:raceId ?raceId ;
                 pred:constructorId ?constructorId ;
                 pred:points ?points .
-            ?constructorId a type:Constructor ;
+            ?constructorId a ps:Constructor ;
                 pred:name ?constructorName .
 
         }}
