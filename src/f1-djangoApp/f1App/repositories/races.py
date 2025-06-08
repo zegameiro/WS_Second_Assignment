@@ -34,7 +34,7 @@ def retrieve_races_by_year(year, offset):
                 WHERE {{
                     ?raceId a ps:Race ;
                         pred:name ?raceName ;
-                        pred:year "{year}"^^xsd:int .
+                        pred:year {year} .
                     ?result a ps:Result ;
                         pred:participatedIn ?raceId ;
                         pred:fastestLapTime ?fastest .
@@ -46,11 +46,11 @@ def retrieve_races_by_year(year, offset):
                 pred:date ?raceDate .
 
             ?result a ps:Result ;
-                    pred:participatedIn ?raceId ;
-                    pred:fastestLapTime ?fastestLap ;
-                    pred:hasDriver ?fastestDriverId ;
-                    pred:hasConstructor ?fastestConstructorId ;
-                    pred:position ?position .
+                pred:participatedIn ?raceId ;
+                pred:fastestLapTime ?fastestLap ;
+                pred:hasDriver ?fastestDriverId ;
+                pred:hasConstructor ?fastestConstructorId ;
+                pred:position ?position .
                     
             FILTER(?fastestLap = ?minFastestLap)
 
@@ -59,7 +59,7 @@ def retrieve_races_by_year(year, offset):
                     pred:fastestLapTime ?winnerfastestLap ;
                     pred:hasDriver ?winnerDriverId ;
                     pred:hasConstructor ?winnerConstructorId ;
-                    pred:position "1"^^xsd:string .
+                    pred:position 1 .
                     
             ?winnerDriverId a ps:Driver ;
                     pred:forename ?winnerDriverForename ;
