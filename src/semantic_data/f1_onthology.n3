@@ -325,8 +325,8 @@ pred:fastestLapTime rdf:type owl:DatatypeProperty ;
     rdfs:comment "Time of the fastest lap that a driver had" .
 
 pred:fastestLapSpeed rdf:type owl:DatatypeProperty ;
-    rdfs:subPropertyOf pred:time ;
     rdfs:domain ps:Result ;
+    rdfs:range xsd:float ;
     rdfs:label "Fastest Lap Speed" ;
     rdfs:comment "Speed a driver had in his Fastest Lap" .
 
