@@ -8,7 +8,7 @@
         Circuit Information
       </h1>
 
-      <div id="card" class="h-card flex flex-col w-[90vw] justify-center items-center gap-4">
+      <div id="card" vocab="https://schema.org/" typeof="schema:Circuit" class="flex flex-col w-[90vw] justify-center items-center gap-4">
         <div class="flex flex-col gap-10 border-2 border-error shadow-xl p-6 rounded-2xl">
           <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold">Details</h1>
@@ -19,21 +19,25 @@
             <div class="flex flex-col text-xl space-y-3">
               <p class="flex gap-4">
                 <span class="font-semibold">Name</span>
-                <span class="p-name">{{ circuit.name }}</span>
+                <span property="name">{{ circuit.name }}</span>
               </p>
               <p class="flex gap-4">
                 <span class="font-semibold">Location</span>
-                <span>{{ circuit.location }}</span>
+                <span property="addressLocality">{{ circuit.location }}</span>
               </p>
               <p class="flex gap-4">
                 <span class="font-semibold">Country</span>
-                <span class="p-country">{{ circuit.country }}</span>
+                <span property="addressCountry">{{ circuit.country }}</span>
               </p>
 
               {% if circuit.lat and circuit.lng %}
                 <p class="flex gap-4">
                   <span class="font-semibold">Coordinates</span>
-                  <span>{{ circuit.lat }}, {{ circuit.lng }}</span>
+                  <span property="geo" typeof="GeoCoordinates">
+                    <meta property="latitude" content="{{ circuit.lat }}" />
+                    <meta property="longitude" content="{{ circuit.lng }}" />
+                    {{ circuit.lat }}, {{ circuit.lng }}
+                  </span>
                 </p>
               {% endif %}
 
@@ -45,6 +49,7 @@
               {% endif %}
 
               <a
+                property="url"
                 class="u-url badge badge-soft badge-primary text-lg"
                 target="_blank"
                 href="{{ circuit.url }}"
@@ -58,7 +63,7 @@
             <div class="card bg-base-100 border-2 h-[100%] bg-white border-white shadow-sm w-max p-1">
               {% if circuit.image %}
                 <div class="flex justify-center">
-                  <img src="{{ circuit.image }}" alt="Circuit Image" width="260">
+                  <img property="image" src="{{ circuit.image }}" alt="Circuit Image" width="260">
                 </div>
               {% endif %}
             </div>
@@ -73,7 +78,7 @@
                   />
               </figure>
               <div class="card-body">
-                <h2 class="p-category text-xl text-center justify-center">
+                <h2 class="text-xl text-center justify-center">
                   {{ circuit.country }}
                 </h2>
               </div>
@@ -82,7 +87,7 @@
 					<div class="divider divider-error my-[-20px]"></div>
 					<div class="flex flex-col gap-2">
 						<span class="text-xl font-bold">Description</span>
-						<p class="text-lg">{{ circuit.comment }}</p>
+						<p property="description" class="text-lg">{{ circuit.comment }}</p>
 					</div>
         </div>
       </div>
