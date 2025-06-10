@@ -25,38 +25,40 @@
 </style>
 
 <div class="p-6">
-  <h1 class="flex items-center gap-2 text-2xl font-semibold pb-5">
-    <i class="fa-solid fa-flag-checkered"></i> Race Details
-  </h1>
+  <div class="flex items-center justify-between">
+      <h1 class="flex items-center gap-2 text-2xl font-semibold pb-5">
+        <i class="fa-solid fa-flag-checkered"></i> Race Details
+      </h1>
+      <button class="btn btn-error" onclick="copySection()">Copy to Clipboard</button>
+  </div>
 
-  <div class="flex flex-col gap-4">
+  <div id="card" class="flex flex-col gap-4" vocab="http://schema.org/" typeof="Race">
     <div class="flex flex-col border-2 border-error shadow-xl p-6 rounded-2xl w-full">
       <div class="flex justify-between gap-10">
-        <!-- Left Column -->
         <div class="flex flex-col gap-7 w-full">
           <h1 class="text-2xl font-bold">Race Information</h1>
           <div class="divider divider-error my-[-20px]"></div>
           <div class="flex items-center w-full">
             <div class="flex flex-col text-xl space-y-3">
               {% if race.name %}
-              <p class="flex gap-4"><span class="font-semibold">Name</span> {{ race.name }}</p>
+              <p class="flex gap-4"><span class="font-semibold">Name</span> <span property="name">{{ race.name }}</span></p>
               {% endif %}
               {% if race.date %}
-              <p class="flex gap-4"><span class="font-semibold">Date</span> {{ race.date }}</p>
+              <p class="flex gap-4"><span class="font-semibold">Date</span> <time property="startDate" datetime="{{ race.date }}">{{ race.date }}</time></p>
               {% endif %}
               {% if race.round %}
-              <p class="flex gap-4"><span class="font-semibold">Round</span> {{ race.round }}</p>
+              <p class="flex gap-4"><span class="font-semibold">Round</span> <span property="eventStatus">{{ race.round }}</span></p>
               {% endif %}
               {% if race.url %}
-              <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ race.url }}">
+              <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ race.url }}" property="url">
                 {{ race.url }}
               </a>
               {% endif %}
               {% if race.winner %}
-                <p class="flex gap-4">
-                  <span class="font-semibold">Winner</span> 
-                  <a href="/drivers/{{race.winner.driverId}}" class="flex flex-row items-center link link-info">
-                    {{ race.winner.driverName }}
+                <p class="flex gap-4" property="winner" typeof="Person">
+                  <span class="font-semibold">Winner</span>
+                  <a href="/drivers/{{race.winner.driverId}}" class="flex flex-row items-center link link-info" property="url">
+                    <span property="name">{{ race.winner.driverName }}</span>
                     <i class="fa-solid fa-angles-right"></i>
                   </a>
                 </p>
@@ -64,9 +66,9 @@
               {% if race.seasonId %}
                 <span class="flex flex-row items-center gap-4">
                   <p class="font-semibold">Season</p>
-                  <a href="/seasons/{{race.seasonId}}" class="link link-info">
+                  <a href="/seasons/{{race.seasonId}}" class="link link-info" property="isPartOf" typeof="SportsSeason">
                     <span class="flex flex-row items-center gap-2">
-                      <p class="font-semibold">{{ race.seasonId }}</p>
+                      <p class="font-semibold" property="name">{{ race.seasonId }}</p>
                       <i class="fa-solid fa-angles-right"></i>
                     </span>
                   </a>
@@ -78,11 +80,10 @@
 
         <div class="divider divider-horizontal divider-error"></div>
 
-        <!-- Right Column -->
-        <div class="flex flex-col gap-7 w-full">
+        <div class="flex flex-col gap-7 w-full" property="location" typeof="SportsActivityLocation">
           <div class="flex flex-row justify-between items-center">
             <h1 class="text-2xl font-bold">Circuit Information</h1>
-            <a href="/circuits/{{ circuit.id }}" class="duration-200 transition hover:scale-105">
+            <a href="/circuits/{{ circuit.id }}" class="duration-200 transition hover:scale-105" property="url">
               <button class="btn btn-sm btn-info text-lg">
                 See more
                 <i class="fa-solid fa-location-dot"></i>
@@ -93,19 +94,19 @@
           <div class="flex items-center w-full">
             <div class="flex flex-col text-xl space-y-3">
               {% if circuit.name %}
-              <p class="flex gap-4"><span class="font-semibold">Name</span> {{ circuit.name }}</p>
+              <p class="flex gap-4"><span class="font-semibold">Name</span> <span property="name">{{ circuit.name }}</span></p>
               {% endif %}
               {% if circuit.location %}
-              <p class="flex gap-4"><span class="font-semibold">Location</span> {{ circuit.location }}</p>
+              <p class="flex gap-4"><span class="font-semibold">Location</span> <span property="addressLocality">{{ circuit.location }}</span></p>
               {% endif %}
               {% if circuit.lat and circuit.lng %}
-              <p class="flex gap-4"><span class="font-semibold">Coordinates</span> ({{ circuit.lat }}, {{ circuit.lng }})</p>
+              <p class="flex gap-4"><span class="font-semibold">Coordinates</span> (<span property="latitude">{{ circuit.lat }}</span>, <span property="longitude">{{ circuit.lng }}</span>)</p>
               {% endif %}
               {% if circuit.country %}
-              <p class="flex gap-4"><span class="font-semibold">Country</span> {{ circuit.country }}</p>
+              <p class="flex gap-4"><span class="font-semibold">Country</span> <span property="addressCountry">{{ circuit.country }}</span></p>
               {% endif %}
               {% if circuit.url %}
-              <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ circuit.url }}">
+              <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ circuit.url }}" property="url">
                 {{ circuit.url }}
               </a>
               {% endif %}
@@ -115,8 +116,7 @@
       </div>
       {% if race.fastestDriver %}
       <div class="divider divider-error"></div>
-      <div class="flex gap-10">
-        <!-- Left Column -->
+      <div class="flex gap-10" property="performer" typeof="Person">
         <div class="flex flex-col gap-7 w-2/3">
           <h1 class="text-2xl font-bold">Fastest Driver</h1>
           <div class="divider divider-error my-[-20px]"></div>
@@ -124,27 +124,27 @@
             <div class="grid grid-flow-col grid-rows-2 gap-x-20 text-xl space-y-3">
               {% if race.fastestDriver.driverName %}
               <p class="flex gap-4">
-                <span class="font-semibold">Name</span> 
-                <a href="/drivers/{{race.fastestDriver.driverId}}" class="flex flex-row items-center link link-info">
-                  {{ race.fastestDriver.driverName }}
+                <span class="font-semibold">Name</span>
+                <a href="/drivers/{{race.fastestDriver.driverId}}" class="flex flex-row items-center link link-info" property="url">
+                  <span property="name">{{ race.fastestDriver.driverName }}</span>
                   <i class="fa-solid fa-angles-right"></i>
                 </a>
               </p>
               {% endif %}
               {% if race.fastestDriver.speed %}
-                <p class="flex gap-4"><span class="font-semibold">Speed</span> {{ race.fastestDriver.speed }}</p>
+                <p class="flex gap-4"><span class="font-semibold">Speed</span> <span property="speed">{{ race.fastestDriver.speed }}</span></p>
               {% endif %}
               {% if race.fastestDriver.time %}
-                <p class="flex gap-4"><span class="font-semibold">Fastest Lap Time</span> {{ race.fastestDriver.time }}</p>
+                <p class="flex gap-4"><span class="font-semibold">Fastest Lap Time</span> <span property="resultTime">{{ race.fastestDriver.time }}</span></p>
               {% endif %}
               {% if race.fastestDriver.lap %}
-                <p class="flex gap-4"><span class="font-semibold">Number of the Fastest Lap</span> {{ race.fastestDriver.lap }}</p>
+                <p class="flex gap-4"><span class="font-semibold">Number of the Fastest Lap</span> <span property="lapCount">{{ race.fastestDriver.lap }}</span></p>
               {% endif %}
               {% if race.fastestDriver.rank %}
-                <p class="flex gap-4"><span class="font-semibold">Rank in the Fastest Lap</span> {{ race.fastestDriver.rank }}</p>
+                <p class="flex gap-4"><span class="font-semibold">Rank in the Fastest Lap</span> <span property="ranking">{{ race.fastestDriver.rank }}</span></p>
               {% endif %}
               {% if race.fastestDriver.position %}
-                <p class="flex gap-4"><span class="font-semibold">Final Position</span> {{ race.fastestDriver.position }}</p>
+                <p class="flex gap-4"><span class="font-semibold">Final Position</span> <span property="position">{{ race.fastestDriver.position }}</span></p>
               {% endif %}
             </div>
           </div>
@@ -156,53 +156,53 @@
     {% if results %}
     <div class="pt-10">
       <div class="flex justify-around h-[200px]">
-        <!-- Third place -->
-        <div class="bg-amber-700 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 100px;">
+        <div class="bg-amber-700 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 100px;" property="subEvent" typeof="Podium">
+          <meta property="eventStatus" content="PodiumThirdPlace" />
           <div class="flex flex-col text-center justify-center items-center">
-            <a href="{% url 'driverProfile' results.2.id %}" class="duration-200 transition hover:scale-105">
+            <a href="{% url 'driverProfile' results.2.id %}" class="duration-200 transition hover:scale-105" property="performer" typeof="Person">
               <span class="flex gap-2 items-center">
-                <i class="fa-solid fa-helmet-safety"></i> {{ results.2.driverName }}
+                <i class="fa-solid fa-helmet-safety"></i> <span property="name">{{ results.2.driverName }}</span>
               </span>
             </a>
-            <span class="flex gap-2 items-center">
-              <i class="fa-solid fa-car"></i> {{ results.2.constructorName }}
+            <span class="flex gap-2 items-center" property="performer" typeof="Constructor">
+              <i class="fa-solid fa-car"></i> <span property="name">{{ results.2.constructorName }}</span>
             </span>
             <span class="flex items-center gap-2">
-              <i class="fa-regular fa-clock"></i> {{ results.2.time }}
+              <i class="fa-regular fa-clock"></i> <span property="extraTimeOfFirst">{{ results.2.time }}</span>
             </span>
           </div>
         </div>
 
-        <!-- First place -->
-        <div class="bg-amber-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 200px;">
+        <div class="bg-amber-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 200px;" property="subEvent" typeof="Podium">
+          <meta property="eventStatus" content="PodiumFirstPlace" />
           <div class="flex flex-col text-center justify-center items-center">
-            <a href="{% url 'driverProfile' results.0.id %}" class="duration-200 transition hover:scale-105">
+            <a href="{% url 'driverProfile' results.0.id %}" class="duration-200 transition hover:scale-105" property="performer" typeof="Person">
               <span class="flex gap-2 items-center">
-                <i class="fa-solid fa-helmet-safety"></i> {{ results.0.driverName }}
+                <i class="fa-solid fa-helmet-safety"></i> <span property="name">{{ results.0.driverName }}</span>
               </span>
             </a>
-            <span class="flex gap-2 items-center">
-              <i class="fa-solid fa-car"></i> {{ results.0.constructorName }}
+            <span class="flex gap-2 items-center" property="performer" typeof="Constructor">
+              <i class="fa-solid fa-car"></i> <span property="name">{{ results.0.constructorName }}</span>
             </span>
             <span class="flex items-center gap-2">
-              <i class="fa-regular fa-clock"></i> {{ results.0.time }}
+              <i class="fa-regular fa-clock"></i> <span property="resultTime">{{ results.0.time }}</span>
             </span>
           </div>
         </div>
 
-        <!-- Second place -->
-        <div class="bg-gray-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 150px;">
+        <div class="bg-gray-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 150px;" property="subEvent" typeof="Podium">
+          <meta property="eventStatus" content="PodiumSecondPlace" />
           <div class="flex flex-col text-center justify-center items-center">
-            <a href="{% url 'driverProfile' results.1.id %}" class="duration-200 transition hover:scale-105">
+            <a href="{% url 'driverProfile' results.1.id %}" class="duration-200 transition hover:scale-105" property="performer" typeof="Person">
               <span class="flex gap-2 items-center">
-                <i class="fa-solid fa-helmet-safety"></i> {{ results.1.driverName }}
+                <i class="fa-solid fa-helmet-safety"></i> <span property="name">{{ results.1.driverName }}</span>
               </span>
             </a>
-            <span class="flex gap-2 items-center">
-              <i class="fa-solid fa-car"></i> {{ results.1.constructorName }}
+            <span class="flex gap-2 items-center" property="performer" typeof="Constructor">
+              <i class="fa-solid fa-car"></i> <span property="name">{{ results.1.constructorName }}</span>
             </span>
             <span class="flex items-center gap-2">
-              <i class="fa-regular fa-clock"></i> {{ results.1.time }}
+              <i class="fa-regular fa-clock"></i> <span property="extraTimeOfFirst">{{ results.1.time }}</span>
             </span>
           </div>
         </div>
@@ -213,4 +213,12 @@
     {% endif %}
   </div>
 </div>
+<script>
+  function copySection() {
+    const content = document.getElementById("card").outerHTML;  // get HTML with tags/classes
+    navigator.clipboard.writeText(content)
+      .then(() => alert("Copied!"))
+      .catch(err => alert("Failed to copy: " + err));
+  }
+</script>
 {% endblock %}

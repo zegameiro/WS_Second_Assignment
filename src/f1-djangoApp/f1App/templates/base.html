@@ -20,7 +20,7 @@
 			<div class="flex flex-row gap-5">
 				<ul class="flex px-2 text-white">
 					<li class="flex flex-row items-center px-2">
-						<form method="POST" action="/inference_rules">
+						<form method="POST" action="{% url 'inference_rules' %}">
 							{% csrf_token %}
 							<button class="btn btn-info btn-xs">Apply SPIN Rules</button>
 						</form>
