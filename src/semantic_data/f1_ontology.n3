@@ -5,23 +5,6 @@
 @prefix ps: <http://pitstop.org/> .
 @prefix pred: <http://pitstop.org/pred/> .
 
-# CONSTRUCT {
-#     ?seasonUri a ps:Season
-# }
-#     WHERE {
-#     ?seasonUri pred:url ?url
-# 
-#     # Check if the URL matches one of the season patterns
-#     FILTER (
-#         REGEX(STR(?url), "http://en.wikipedia.org/wiki/[0-9]{4}_Formula_One_season", "i") ||
-#         REGEX(STR(?url), "http://en.wikipedia.org/wiki/[0-9]{4}_Formula_One_World_Championship", "i")
-#     )
-# 
-#     FILTER NOT EXISTS {
-#         ?seasonUri rdf:type ?anyType
-#     }
-# }
-
 ############################# HEADER #############################
 
 ps:ontology a owl:Ontology ;
@@ -136,7 +119,6 @@ pred:time rdf:type owl:DatatypeProperty ;
 ############################# CIRCUIT PROPERTIES #############################
 
 pred:circuitRef rdf:type owl:DatatypeProperty, owl:FunctionalProperty, owl:InverseFunctionalProperty ;
-    rdf:type owl:FunctionalProperty ;
     rdfs:domain ps:Circuit ;
     rdfs:range xsd:string ;
     rdfs:label "Circuit Reference" ;
@@ -216,6 +198,7 @@ pred:dob rdf:type owl:DatatypeProperty ;
 ############################# QUALIFYING PROPERTIES #############################
 
 pred:qt rdf:type owl:DatatypeProperty ;
+    rdfs:subPropertyOf pred:time ;
     rdfs:domain ps:Qualifying ;
     rdfs:range xsd:string ;
     rdfs:label "Qualifying Time" ;
@@ -322,7 +305,7 @@ pred:fastestLapTime rdf:type owl:DatatypeProperty ;
     rdfs:subPropertyOf pred:time ;
     rdfs:domain ps:Result ;
     rdfs:label "Fastest Lap Time" ;
-    rdfs:comment "Time of the fastest lap that a driver had" .
+    rdfs:comment "a of the fastest lap that a driver had" .
 
 pred:fastestLapSpeed rdf:type owl:DatatypeProperty ;
     rdfs:domain ps:Result ;
