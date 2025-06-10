@@ -57,8 +57,6 @@ def get_circuit_image(circuit_name):
 
     resource_uri = wikipedia_url_to_dbpedia_resource(circuit_name)
 
-    print("DBpedia resource URI: ", resource_uri)
-
     query = f"""
         PREFIX dbo: <http://dbpedia.org/ontology/>
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -74,8 +72,6 @@ def get_circuit_image(circuit_name):
 
     sparql.setQuery(query)
     results = sparql.query().convert()
-
-    print("DBpedia query results: ", results)
 
     bindings = results["results"]["bindings"]
     if bindings:
@@ -94,6 +90,8 @@ def get_circuit_image(circuit_name):
 def get_circuit_by_id(circuit_id):
     res = retrieve_circuit_by_id(circuit_id)
 
+    print(res)
+
     data = json.loads(res)
 
     if len(data['results']['bindings']) < 1:
@@ -110,15 +108,16 @@ def get_circuit_by_id(circuit_id):
     circuit['alt'] = binding['alt']['value']
     circuit['url'] = binding['url']['value']
 
+    if 'numberOfRaces' in binding:
+        circuit['numberOfRaces'] = binding['numberOfRaces']['value']
+
     if 'image' in binding and 'comment' in binding:
         circuit['image'] = binding['image']['value']
         circuit['comment'] = binding['abstract']['value']
     else:
         abstract, image_url = get_circuit_image(circuit['url'])
-        print("DBpedia abstract found: ", abstract)
-        print("Image URL: ", image_url or "No image found")
         if image_url:
-            insert_circuit_abstract(circuit_id, abstract)
+            insert_circuit_image(circuit_id, image_url)
         if abstract:
             insert_circuit_abstract(circuit_id, abstract)
         circuit['image'] = image_url

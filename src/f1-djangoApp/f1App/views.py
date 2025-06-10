@@ -12,6 +12,7 @@ from f1App.services.constructors import get_all_constructors
 from f1App.services.driver import get_all_drivers, get_driver_by_id, get_driver_qualifying, search_drivers
 from f1App.services.races import delete_race_service, get_all_races_by_date, get_all_races_by_year, get_race_by_id, get_races_by_name, get_results_by_race_id, insert_race_service
 from f1App.services.seasons import delete_season_service, get_all_seasons, get_constructor_podium, get_driver_podium, insert_season_service
+from f1App.inference_rules import apply_plus_inference_rules
 
 # Create your views here.
 def index(request):
@@ -72,6 +73,15 @@ def race_profile(request,id):
 
     circuit["id"] = circuit["circuitId"].split("/circuit/")[1]
 
+    if 'winner' in race.keys():
+        race["winner"]["driverId"] = race["winner"]["driverId"].split("/driver/")[1]
+
+    if 'fastestDriver' in race.keys():
+        race["fastestDriver"]["driverId"] = race["fastestDriver"]["driverId"].split("/driver/")[1]
+
+    if 'seasonId' in race.keys():
+        race["seasonId"] = race["seasonId"].split("/season/")[1] 
+
     context = {
         "race":race,
         "circuit":circuit,
@@ -95,7 +105,6 @@ def add_race(request):
         name = request.POST.get("name")
         round = request.POST.get("round")
         year = request.POST.get("year")
-        print(f"Received Race Data: name={name}, date={date}, year={year}, round={round}, circuit_id={circuitId}")
         insert_race_service(circuitId, date, name, round, year)
     return redirect('races')
 
@@ -199,13 +208,10 @@ def season_profile(request, year):
     races_by_season = get_all_races_by_year(year,1)
     driver_podium = get_driver_podium(year)
     const_podium = get_constructor_podium(year)
-    print(races_by_season)
-    print("================")
-    print(driver_podium)
+
     for d in driver_podium:
         d["id"] = (d["driverId"].split("/driver/")[1])
-    print("================")
-    print(const_podium)
+
     context = {
         "year": year,
         "drivers":driver_podium,
@@ -271,4 +277,15 @@ def circuit_profile(request, id):
 
     template = loader.get_template("circuitProfile.html")
     return render(request, template_name="circuitProfile.html", context=context)
-    
+
+# |==========================|
+# |       SPIN Rules         |
+# |==========================|
+
+@csrf_protect
+def inference_rules(request):
+
+    if request.method == 'POST':
+        apply_plus_inference_rules()
+
+    return redirect('index')

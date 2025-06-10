@@ -46,6 +46,7 @@ def retrieve_driver_by_id(driver_id):
             OPTIONAL {{ ns:{driver_id} pred:number ?number . }}
             OPTIONAL {{ ns:{driver_id} pred:code ?code . }}
             OPTIONAL {{ ns:{driver_id} pred:image ?image . }}
+            OPTIONAL {{ ns:{driver_id} pred:fullName ?fullName .}}
         }}
     """
 
@@ -65,7 +66,11 @@ def retrieve_drivers_by_regex(query, offset):
                 pred:surname ?surname ;
                 pred:nationality ?nationality
             
-            FILTER regex(CONCAT(?forename, " ", ?surname), "{query}", "i") .
+            OPTIONAL {{ ?driverId pred:fullName ?fullName . }}
+            
+            BIND(COALESCE(?fullName, CONCAT(?forename, " ", ?surname)) AS ?nameToSearch) .
+
+            FILTER regex(?nameToSeach,"{query}", "i") .
         }}
         LIMIT {LIMIT}
         OFFSET {offset}

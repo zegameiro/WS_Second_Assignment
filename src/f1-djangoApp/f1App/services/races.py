@@ -86,6 +86,9 @@ def get_races_by_name(race_name):
 def get_race_by_id(race_id):
 
     res = retrieve_race_by_id(race_id)
+
+    print(res)
+
     data = json.loads(res)
 
     if len(data['results']['bindings']) < 1:
@@ -113,6 +116,34 @@ def get_race_by_id(race_id):
 
     if 'circuitId' in binding.keys():
         race['circuitId'] = binding['circuitId']['value']
+
+    if 'seasonId' in binding.keys():
+        race['seasonId'] = binding['seasonId']['value']
+
+    if 'winnerDriverName' in binding.keys() and 'winnerDriverId' in binding.keys():
+        race['winner'] = {
+            'driverId': binding['winnerDriverId']['value'],
+            'driverName': binding['winnerDriverName']['value']
+        }
+
+    if (
+        'fastestDriverFullName' in binding.keys() and 
+        'fastestDriverId' in binding.keys() and 
+        'fastestLapSpeed' in binding.keys() and
+        'fastestLapTime' in binding.keys() and
+        'fastestLap' in binding.keys() and
+        'rank' in binding.keys() and
+        'position' in binding.keys()
+    ):
+        race['fastestDriver'] = {
+            'driverId': binding['fastestDriverId']['value'],
+            'driverName': binding['fastestDriverFullName']['value'],
+            'speed': binding['fastestLapSpeed']['value'],
+            'time': binding['fastestLapTime']['value'],
+            'lap': binding['fastestLap']['value'],
+            'rank': binding['rank']['value'],
+            'position': binding['position']['value']
+        }
 
     return race
 

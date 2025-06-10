@@ -41,6 +41,8 @@ urlpatterns = [
     # ========Circuits========
     path('circuits', views.circuits, name='circuits'),
     path('circuits/<int:id>', views.circuit_profile, name='circuitProfile'),
+    # ========Spin Rules========
+    path('inference_rules', views.inference_rules, name='inference_rules'),
 ]
 
 inference_rules.apply_inference_rules()

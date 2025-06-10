@@ -111,7 +111,10 @@ def retrieve_race_by_id(race_id):
         PREFIX pred: <{PRED}>
         PREFIX ps: <{NS}>
         PREFIX ns: <{NS}race/>
-        SELECT ?year ?round ?name ?date ?time ?raceUrl ?circuitId
+        SELECT ?year ?round ?name ?date ?time ?raceUrl
+               ?circuitId ?winnerDriverName ?winnerDriverId ?result
+               ?fastestDriverFullName ?fastestDriverId ?fastestLapSpeed ?fastestLap
+               ?seasonId ?fastestLapTime ?rank ?position
         WHERE {{
             ns:{race_id} a ps:Race .
             
@@ -122,6 +125,31 @@ def retrieve_race_by_id(race_id):
             OPTIONAL {{ ns:{race_id} pred:totalDuration ?time. }}
             OPTIONAL {{ ns:{race_id} pred:hasCircuit ?circuitId. }}
             OPTIONAL {{ ns:{race_id} pred:url ?raceUrl. }}
+            OPTIONAL {{ ns:{race_id} pred:wasWonBy ?winnerDriverId. }}
+            OPTIONAL {{ ns:{race_id} pred:fastestDriver ?fastestDriverId. }}
+            OPTIONAL {{ ns:{race_id} pred:partOfSeason ?seasonId . }}
+
+            OPTIONAL {{
+                ?winnerDriverId a ps:Driver ;
+                    pred:fullName ?winnerDriverName .
+            }}
+
+            OPTIONAL {{
+                ?fastestDriverId a ps:Driver ;
+                    pred:fullName ?fastestDriverFullName .
+            }}
+
+            OPTIONAL {{
+                ?result a ps:Result ;
+                    pred:participatedIn ns:{race_id} ;
+                    pred:hasDriver ?fastestDriverId ;
+                    pred:fastestLapSpeed ?fastestLapSpeed ;
+                    pred:fastestLap ?fastestLap ;
+                    pred:fastestLapTime ?fastestLapTime ;
+                    pred:rank ?rank ;
+                    pred:position ?position .
+            }}
+            
         }}
     """
 

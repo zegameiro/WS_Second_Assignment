@@ -44,6 +44,21 @@ def apply_inference_rules():
     """
     db.update(query)
 
+    query = f"""
+        PREFIX pred: <{PRED}>
+        PREFIX ps: <{NS}>
+        INSERT {{
+            ?entity a ps:ConstructorResult .
+        }}
+        WHERE {{
+            ?entity pred:obtainedPoints ?points .
+            FILTER NOT EXISTS {{
+                ?entity rdf:type ?anyType .
+            }}
+        }}
+    """
+    db.update(query)
+
 def apply_plus_inference_rules():
 
     # Add the total number of races that occured in each circuit
@@ -63,13 +78,14 @@ def apply_plus_inference_rules():
         }}
     """
     db.update(query)
+    print("Added SPIN rule for total number of races in each circuit")
 
     # Add a rule to infer the winner of a race
     query = f"""
         PREFIX pred: <{PRED}>
         PREFIX ps: <{NS}>
         INSERT {{
-            ?driver pred:hasWonRace ?race
+            ?race pred:wasWonBy ?driver
         }} 
         WHERE {{
             ?result a ps:Result ;
@@ -79,6 +95,7 @@ def apply_plus_inference_rules():
         }}
     """
     db.update(query)
+    print("Added SPIN rule for inferring the winner of a race")
 
     # Infer that a race belongs to a season
     query = f"""
@@ -96,6 +113,7 @@ def apply_plus_inference_rules():
         }}
     """
     db.update(query)
+    print("Added SPIN rule for inferring the season that a race belongs to")
 
     # Infer driver's full name
     query = f"""
@@ -112,6 +130,7 @@ def apply_plus_inference_rules():
         }}
     """
     db.update(query)
+    print("Added SPIN rule for inferring driver's full name")
 
     # Infer fastestDriver in a race based on the fastest Speed lap
     query = f"""
@@ -120,7 +139,7 @@ def apply_plus_inference_rules():
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
         INSERT {{
-            ?driver pred:fastestInRace ?race .
+            ?race pred:fastestDriver ?driver .
         }}
         WHERE {{
             {{
@@ -143,5 +162,6 @@ def apply_plus_inference_rules():
         }}
     """
     db.update(query)
+    print("Added SPIN rule for inferring the fastest driver in a race")
 
 

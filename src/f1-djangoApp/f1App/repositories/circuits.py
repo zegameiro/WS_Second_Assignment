@@ -65,7 +65,7 @@ def retrieve_circuit_by_id(circuit_id):
         PREFIX pred: <{PRED}>
         PREFIX ns: <{NS}circuit/>
         PREFIX ps: <{NS}>
-        SELECT ?circuitRef ?name ?location ?country ?lat ?lng ?alt ?url
+        SELECT *
         WHERE {{
             ns:{circuit_id} a ps:Circuit ;
                 pred:circuitRef ?circuitRef ;
@@ -76,6 +76,7 @@ def retrieve_circuit_by_id(circuit_id):
                 pred:lng ?lng ;
                 pred:alt ?alt ;
                 pred:url ?url .
+            OPTIONAL {{ ns:{circuit_id} pred:numberOfRaces ?numberOfRaces . }}
         }}
     """
 

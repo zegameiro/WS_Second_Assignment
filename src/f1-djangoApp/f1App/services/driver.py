@@ -78,6 +78,9 @@ def get_driver_by_id(driver_id):
     if 'code' in binding.keys():
         driver['code'] = binding['code']['value']
 
+    if 'fullName' in binding:
+        driver['fullName'] = binding['fullName']['value']
+
     if 'image' in binding:
         driver['image'] = binding['image']['value']
     else:
@@ -86,8 +89,6 @@ def get_driver_by_id(driver_id):
         driver['image'] = image_url
 
     return driver
-
-
 
 def search_drivers(regex, page):
     """Get all the drivers"""

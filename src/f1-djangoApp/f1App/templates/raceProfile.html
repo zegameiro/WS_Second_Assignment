@@ -30,67 +30,127 @@
   </h1>
 
   <div class="flex flex-col gap-4">
-    <div class="flex justify-between gap-10 border-2 border-error shadow-xl p-6 rounded-2xl w-full">
-      <!-- Left Column -->
-      <div class="flex flex-col gap-7 w-full">
-        <h1 class="text-2xl font-bold">Race Information</h1>
-        <div class="divider divider-error my-[-20px]"></div>
-        <div class="flex items-center w-full">
-          <div class="flex flex-col text-xl space-y-3">
-            {% if race.name %}
-            <p class="flex gap-4"><span class="font-semibold">Name</span> {{ race.name }}</p>
-            {% endif %}
-            {% if race.date %}
-            <p class="flex gap-4"><span class="font-semibold">Date</span> {{ race.date }}</p>
-            {% endif %}
-            {% if race.round %}
-            <p class="flex gap-4"><span class="font-semibold">Round</span> {{ race.round }}</p>
-            {% endif %}
-            {% if race.url %}
-            <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ race.url }}">
-              {{ race.url }}
+    <div class="flex flex-col border-2 border-error shadow-xl p-6 rounded-2xl w-full">
+      <div class="flex justify-between gap-10">
+        <!-- Left Column -->
+        <div class="flex flex-col gap-7 w-full">
+          <h1 class="text-2xl font-bold">Race Information</h1>
+          <div class="divider divider-error my-[-20px]"></div>
+          <div class="flex items-center w-full">
+            <div class="flex flex-col text-xl space-y-3">
+              {% if race.name %}
+              <p class="flex gap-4"><span class="font-semibold">Name</span> {{ race.name }}</p>
+              {% endif %}
+              {% if race.date %}
+              <p class="flex gap-4"><span class="font-semibold">Date</span> {{ race.date }}</p>
+              {% endif %}
+              {% if race.round %}
+              <p class="flex gap-4"><span class="font-semibold">Round</span> {{ race.round }}</p>
+              {% endif %}
+              {% if race.url %}
+              <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ race.url }}">
+                {{ race.url }}
+              </a>
+              {% endif %}
+              {% if race.winner %}
+                <p class="flex gap-4">
+                  <span class="font-semibold">Winner</span> 
+                  <a href="/drivers/{{race.winner.driverId}}" class="flex flex-row items-center link link-info">
+                    {{ race.winner.driverName }}
+                    <i class="fa-solid fa-angles-right"></i>
+                  </a>
+                </p>
+              {% endif %}
+              {% if race.seasonId %}
+                <span class="flex flex-row items-center gap-4">
+                  <p class="font-semibold">Season</p>
+                  <a href="/seasons/{{race.seasonId}}" class="link link-info">
+                    <span class="flex flex-row items-center gap-2">
+                      <p class="font-semibold">{{ race.seasonId }}</p>
+                      <i class="fa-solid fa-angles-right"></i>
+                    </span>
+                  </a>
+                </span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="divider divider-horizontal divider-error"></div>
+
+        <!-- Right Column -->
+        <div class="flex flex-col gap-7 w-full">
+          <div class="flex flex-row justify-between items-center">
+            <h1 class="text-2xl font-bold">Circuit Information</h1>
+            <a href="/circuits/{{ circuit.id }}" class="duration-200 transition hover:scale-105">
+              <button class="btn btn-sm btn-info text-lg">
+                See more
+                <i class="fa-solid fa-location-dot"></i>
+              </button>
             </a>
-            {% endif %}
+          </div>
+          <div class="divider divider-error my-[-20px]"></div>
+          <div class="flex items-center w-full">
+            <div class="flex flex-col text-xl space-y-3">
+              {% if circuit.name %}
+              <p class="flex gap-4"><span class="font-semibold">Name</span> {{ circuit.name }}</p>
+              {% endif %}
+              {% if circuit.location %}
+              <p class="flex gap-4"><span class="font-semibold">Location</span> {{ circuit.location }}</p>
+              {% endif %}
+              {% if circuit.lat and circuit.lng %}
+              <p class="flex gap-4"><span class="font-semibold">Coordinates</span> ({{ circuit.lat }}, {{ circuit.lng }})</p>
+              {% endif %}
+              {% if circuit.country %}
+              <p class="flex gap-4"><span class="font-semibold">Country</span> {{ circuit.country }}</p>
+              {% endif %}
+              {% if circuit.url %}
+              <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ circuit.url }}">
+                {{ circuit.url }}
+              </a>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="divider divider-horizontal divider-error"></div>
-
-      <!-- Right Column -->
-      <div class="flex flex-col gap-7 w-full">
-        <div class="flex flex-row justify-between items-center">
-          <h1 class="text-2xl font-bold">Circuit Information</h1>
-          <a href="/circuits/{{ circuit.id }}" class="duration-200 transition hover:scale-105">
-            <button class="btn btn-sm btn-info text-lg">
-              See more
-              <i class="fa-solid fa-location-dot"></i>
-            </button>
-          </a>
-        </div>
-        <div class="divider divider-error my-[-20px]"></div>
-        <div class="flex items-center w-full">
-          <div class="flex flex-col text-xl space-y-3">
-            {% if circuit.name %}
-            <p class="flex gap-4"><span class="font-semibold">Name</span> {{ circuit.name }}</p>
-            {% endif %}
-            {% if circuit.location %}
-            <p class="flex gap-4"><span class="font-semibold">Location</span> {{ circuit.location }}</p>
-            {% endif %}
-            {% if circuit.lat and circuit.lng %}
-            <p class="flex gap-4"><span class="font-semibold">Coordinates</span> ({{ circuit.lat }}, {{ circuit.lng }})</p>
-            {% endif %}
-            {% if circuit.country %}
-            <p class="flex gap-4"><span class="font-semibold">Country</span> {{ circuit.country }}</p>
-            {% endif %}
-            {% if circuit.url %}
-            <a class="badge badge-soft badge-primary text-lg" target="_blank" href="{{ circuit.url }}">
-              {{ circuit.url }}
-            </a>
-            {% endif %}
+      {% if race.fastestDriver %}
+      <div class="divider divider-error"></div>
+      <div class="flex gap-10">
+        <!-- Left Column -->
+        <div class="flex flex-col gap-7 w-2/3">
+          <h1 class="text-2xl font-bold">Fastest Driver</h1>
+          <div class="divider divider-error my-[-20px]"></div>
+          <div class="flex items-center w-full">
+            <div class="grid grid-flow-col grid-rows-2 gap-x-20 text-xl space-y-3">
+              {% if race.fastestDriver.driverName %}
+              <p class="flex gap-4">
+                <span class="font-semibold">Name</span> 
+                <a href="drivers/{{race.fastestDriver.driverId}}" class="flex flex-row items-center link link-info">
+                  {{ race.fastestDriver.driverName }}
+                  <i class="fa-solid fa-angles-right"></i>
+                </a>
+              </p>
+              {% endif %}
+              {% if race.fastestDriver.speed %}
+                <p class="flex gap-4"><span class="font-semibold">Speed</span> {{ race.fastestDriver.speed }}</p>
+              {% endif %}
+              {% if race.fastestDriver.time %}
+                <p class="flex gap-4"><span class="font-semibold">Fastest Lap Time</span> {{ race.fastestDriver.time }}</p>
+              {% endif %}
+              {% if race.fastestDriver.lap %}
+                <p class="flex gap-4"><span class="font-semibold">Number of the Fastest Lap</span> {{ race.fastestDriver.lap }}</p>
+              {% endif %}
+              {% if race.fastestDriver.rank %}
+                <p class="flex gap-4"><span class="font-semibold">Rank in the Fastest Lap</span> {{ race.fastestDriver.rank }}</p>
+              {% endif %}
+              {% if race.fastestDriver.position %}
+                <p class="flex gap-4"><span class="font-semibold">Final Position</span> {{ race.fastestDriver.position }}</p>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
+      {% endif %}
     </div>
 
     {% if results %}

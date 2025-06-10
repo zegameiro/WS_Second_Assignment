@@ -48,6 +48,13 @@
                 </p>
               {% endif %}
 
+              {% if circuit.numberOfRaces %}
+                <p class="flex gap-4">
+                  <span class="font-semibold">Total Number of Races</span>
+                  <span>{{ circuit.numberOfRaces }}</span>
+                </p>
+              {% endif %}
+
               <a
                 property="url"
                 class="u-url badge badge-soft badge-primary text-lg"
