@@ -90,8 +90,6 @@ def get_circuit_image(circuit_name):
 def get_circuit_by_id(circuit_id):
     res = retrieve_circuit_by_id(circuit_id)
 
-    print(res)
-
     data = json.loads(res)
 
     if len(data['results']['bindings']) < 1:

@@ -87,8 +87,6 @@ def get_race_by_id(race_id):
 
     res = retrieve_race_by_id(race_id)
 
-    print(res)
-
     data = json.loads(res)
 
     if len(data['results']['bindings']) < 1:
