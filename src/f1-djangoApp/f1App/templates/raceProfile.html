@@ -80,7 +80,7 @@
 
         <div class="divider divider-horizontal divider-error"></div>
 
-        <div class="flex flex-col gap-7 w-full" property="location" typeof="SportsActivityLocation">
+        <div class="flex flex-col gap-7 w-full" property="location" typeof="Circuit">
           <div class="flex flex-row justify-between items-center">
             <h1 class="text-2xl font-bold">Circuit Information</h1>
             <a href="/circuits/{{ circuit.id }}" class="duration-200 transition hover:scale-105" property="url">
@@ -116,7 +116,7 @@
       </div>
       {% if race.fastestDriver %}
       <div class="divider divider-error"></div>
-      <div class="flex gap-10" property="performer" typeof="Person">
+      <div class="flex gap-10" property="Driver" typeof="Person">
         <div class="flex flex-col gap-7 w-2/3">
           <h1 class="text-2xl font-bold">Fastest Driver</h1>
           <div class="divider divider-error my-[-20px]"></div>
@@ -159,12 +159,12 @@
         <div class="bg-amber-700 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 100px;" property="subEvent" typeof="Podium">
           <meta property="eventStatus" content="PodiumThirdPlace" />
           <div class="flex flex-col text-center justify-center items-center">
-            <a href="{% url 'driverProfile' results.2.id %}" class="duration-200 transition hover:scale-105" property="performer" typeof="Person">
+            <a href="{% url 'driverProfile' results.2.id %}" class="duration-200 transition hover:scale-105" property="Driver" typeof="Person">
               <span class="flex gap-2 items-center">
                 <i class="fa-solid fa-helmet-safety"></i> <span property="name">{{ results.2.driverName }}</span>
               </span>
             </a>
-            <span class="flex gap-2 items-center" property="performer" typeof="Constructor">
+            <span class="flex gap-2 items-center" property="Constructor" typeof="Constructor">
               <i class="fa-solid fa-car"></i> <span property="name">{{ results.2.constructorName }}</span>
             </span>
             <span class="flex items-center gap-2">
@@ -176,12 +176,12 @@
         <div class="bg-amber-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 200px;" property="subEvent" typeof="Podium">
           <meta property="eventStatus" content="PodiumFirstPlace" />
           <div class="flex flex-col text-center justify-center items-center">
-            <a href="{% url 'driverProfile' results.0.id %}" class="duration-200 transition hover:scale-105" property="performer" typeof="Person">
+            <a href="{% url 'driverProfile' results.0.id %}" class="duration-200 transition hover:scale-105" property="Driver" typeof="Person">
               <span class="flex gap-2 items-center">
                 <i class="fa-solid fa-helmet-safety"></i> <span property="name">{{ results.0.driverName }}</span>
               </span>
             </a>
-            <span class="flex gap-2 items-center" property="performer" typeof="Constructor">
+            <span class="flex gap-2 items-center" property="Constructor" typeof="Constructor">
               <i class="fa-solid fa-car"></i> <span property="name">{{ results.0.constructorName }}</span>
             </span>
             <span class="flex items-center gap-2">
@@ -193,12 +193,12 @@
         <div class="bg-gray-400 w-1/5 text-black font-bold text-center mt-auto rounded-t-xl p-2 pt-3 opacity-0 animate-fade-up" style="height: 150px;" property="subEvent" typeof="Podium">
           <meta property="eventStatus" content="PodiumSecondPlace" />
           <div class="flex flex-col text-center justify-center items-center">
-            <a href="{% url 'driverProfile' results.1.id %}" class="duration-200 transition hover:scale-105" property="performer" typeof="Person">
+            <a href="{% url 'driverProfile' results.1.id %}" class="duration-200 transition hover:scale-105" property="Driver" typeof="Person">
               <span class="flex gap-2 items-center">
                 <i class="fa-solid fa-helmet-safety"></i> <span property="name">{{ results.1.driverName }}</span>
               </span>
             </a>
-            <span class="flex gap-2 items-center" property="performer" typeof="Constructor">
+            <span class="flex gap-2 items-center" property="Constructor" typeof="Constructor">
               <i class="fa-solid fa-car"></i> <span property="name">{{ results.1.constructorName }}</span>
             </span>
             <span class="flex items-center gap-2">
