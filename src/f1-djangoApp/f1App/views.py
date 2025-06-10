@@ -16,15 +16,13 @@ from f1App.inference_rules import apply_plus_inference_rules
 
 # Create your views here.
 def index(request):
-    template = loader.get_template("homePage.html")
     context = {"latest_question_list": "woof"}
-    return HttpResponse(template.render(context, request))
+    return render(request, "homePage.html", context)
 
 # |==========================|
 # |          Races           |
 # |==========================|
 def races(request):
-    template = loader.get_template("races.html")
     page = int(request.GET.get("page", 1))
     results = get_all_races_by_date(page)
     circuits = get_all_circuits()
@@ -51,7 +49,7 @@ def races(request):
 
     context = {"races": sendResults,"page_obj": page_obj,"circuits":circuits}
     
-    return HttpResponse(template.render(context, request))
+    return render(request, "races.html", context)
 
 def race_year(request,name):
     results = get_races_by_name(name)
@@ -87,8 +85,7 @@ def race_profile(request,id):
         "circuit":circuit,
         "results":results,
     }
-    template = loader.get_template("raceProfile.html")
-    return HttpResponse(template.render(context))
+    return render(request, "raceProfile.html", context)
 
 @csrf_protect
 def race_delete(request):
@@ -138,8 +135,7 @@ def drivers(request):
         "drivers":results,
         "page_obj": page_obj
     }
-    template = loader.get_template("drivers.html")
-    return HttpResponse(template.render(context=context))
+    return render(request, "drivers.html", context)
 
 def driver_profile(request,id):
     results = get_driver_by_id(id)
@@ -152,8 +148,7 @@ def driver_profile(request,id):
         "wins":wins,
         "flag":flag,
     }
-    template = loader.get_template("driverProfile.html")
-    return HttpResponse(template.render(context=context))
+    return render(request, "driverProfile.html", context)
     
 # |==========================|
 # |       Constructors       |
@@ -177,8 +172,7 @@ def constructors(request):
         "constructors":results,
         "page_obj": page_obj
     }
-    template = loader.get_template("constructors.html")
-    return HttpResponse(template.render(context))
+    return render(request, "constructors.html", context)
 
 # |==========================|
 # |       Seasons            |
@@ -218,8 +212,7 @@ def season_profile(request, year):
         "teams":const_podium,
         "races":races_by_season,
     }
-    template = loader.get_template("seasonProfile.html")
-    return HttpResponse(template.render(context))
+    return render(request, "seasonProfile.html", context)
 
 @csrf_protect
 def add_season(request):
@@ -275,8 +268,7 @@ def circuit_profile(request, id):
         "flag": flag
     }
 
-    template = loader.get_template("circuitProfile.html")
-    return render(request, template_name="circuitProfile.html", context=context)
+    return render(request, "circuitProfile.html", context)
 
 # |==========================|
 # |       SPIN Rules         |
