@@ -53,6 +53,25 @@ def retrieve_driver_by_id(driver_id):
     res = db.query(query)
     return res
 
+def retrieve_driver_constructors(driver_id):
+    query = f"""
+        PREFIX ns: <{NS}driver/>
+        PREFIX pred: <{PRED}>
+        PREFIX ps: <{NS}>
+
+        SELECT DISTINCT ?constructorId ?constructorName ?year
+        WHERE {{
+
+            << ns:{driver_id} pred:wasInConstructor ?constructorId >> pred:year ?year .
+
+            ?constructorId a ps:Constructor ; 
+                        pred:name ?constructorName .
+        }}
+        ORDER BY DESC(?year)
+    """
+    res = db.query(query)
+    return res
+
 def retrieve_drivers_by_regex(query, offset):
 
     query = f"""
@@ -70,7 +89,7 @@ def retrieve_drivers_by_regex(query, offset):
             
             BIND(COALESCE(?fullName, CONCAT(?forename, " ", ?surname)) AS ?nameToSearch) .
 
-            FILTER regex(?nameToSeach,"{query}", "i") .
+            FILTER regex(?nameToSearch,"{query}", "i") .
         }}
         LIMIT {LIMIT}
         OFFSET {offset}

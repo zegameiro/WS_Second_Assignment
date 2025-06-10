@@ -121,8 +121,8 @@ def drivers(request):
     else:
         results = get_all_drivers(page)
 
-    if (results == []):
-        return redirect('/drivers')  
+    # if (results == []):
+    #     return redirect('/drivers')  
 
     page_obj = {}
     page_obj["page"] = page
@@ -150,7 +150,7 @@ def driver_profile(request,id):
     context = {
         "driver":results,
         "wins":wins,
-        "flag":flag
+        "flag":flag,
     }
     template = loader.get_template("driverProfile.html")
     return HttpResponse(template.render(context=context))

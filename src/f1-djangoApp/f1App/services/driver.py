@@ -59,14 +59,25 @@ def get_driver_by_id(driver_id):
     """Get driver by id"""
 
     res = retrieve_driver_by_id(driver_id)
+    res2 = retrieve_driver_constructors(driver_id)
     data = json.loads(res)
+    data2 = json.loads(res2)
     
     if len(data['results']['bindings']) < 1:
         raise Exception("Driver not found")
 
     binding = data['results']['bindings'][0]
+    binding2 = data2['results']['bindings']
+    constructors = []
+    for b in binding2:
+        c = {}
+        c["id"] = b['constructorId']['value']
+        c["name"] = b["constructorName"]["value"]
+        c["year"] = b["year"]["value"]
+        constructors.append(c)
 
     driver = {}
+    driver["constructors"] = constructors
     driver['forename'] = binding['forename']['value']
     driver['surname'] = binding['surname']['value']
     driver['dob'] = binding['dob']['value']

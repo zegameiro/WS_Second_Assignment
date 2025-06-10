@@ -1164,6 +1164,9 @@
   .w-1\/5 {
     width: calc(1/5 * 100%);
   }
+  .w-2\/3 {
+    width: calc(2/3 * 100%);
+  }
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
@@ -1196,6 +1199,9 @@
   }
   .min-w-50 {
     min-width: calc(var(--spacing) * 50);
+  }
+  .flex-grow {
+    flex-grow: 1;
   }
   .grow {
     flex-grow: 1;

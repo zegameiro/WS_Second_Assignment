@@ -121,6 +121,32 @@
             {% endif %}
           </div>
         </div>
+        <!-- Constructors Section -->
+         <div class="card gap-10 items-center border-2 border-error shadow-xl p-2 rounded-2xl">
+          <div class="card-body w-full">
+            <h1 class="card-title text-2xl">Constructors Participated</h1>
+            <div class="divider divider-error"></div>
+
+            {% if driver.constructors %}
+              <div class="h-feed grid grid-cols-3 gap-y-6 gap-x-6 overflow-y-auto w-full max-h-[30rem]">
+                {% for constructors in driver.constructors %}
+                    <div class="h-constructor flex flex-col items-center text-warning text-xl border-2 border-warning p-2 space-y-2 rounded-lg">
+                      <span class="p-name badge badge-warning text-xl">
+                        {{ constructors.name }}
+                      </span>
+                      <time class="dt-year" datetime="{{ constructors.year }}">
+                        {{ constructors.year }}
+                      </time>
+                    </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="flex gap-1 items-center text-xl text-warning">
+                <i class="icon-sad"></i> No Information yet
+              </div>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
   {% else %}
