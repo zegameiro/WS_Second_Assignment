@@ -164,26 +164,27 @@ def apply_plus_inference_rules():
     db.update(query)
     print("Added SPIN rule for inferring the fastest driver in a race")
 
-    query = f"""
-        PREFIX pred: <{PRED}>
-        PREFIX ps: <{NS}>
+    query = rf"""
+            PREFIX pred: <{PRED}>
+            PREFIX ps: <{NS}>
 
-        INSERT {{
-            \<\< ?driverId pred:wasInConstructor ?constructorId \>\> pred:year ?year .
-        }}
-        WHERE {{
-        ?result a ps:Result ;
-                pred:participatedIn ?raceId ;
-                pred:hasDriver ?driverId ;
-                pred:hasConstructor ?constructorId .
-        
+            INSERT {{
+                << ?driverId pred:wasInConstructor ?constructorId >> pred:year ?year .
+            }}
+            WHERE {{
+            ?result a ps:Result ;
+                    pred:participatedIn ?raceId ;
+                    pred:hasDriver ?driverId ;
+                    pred:hasConstructor ?constructorId .
 
-        ?raceId a ps:Race ;
-                pred:year ?year .
 
-        }}
-    """
-    db.update(query)
+            ?raceId a ps:Race ;
+                    pred:year ?year .
+
+            }}
+        """
+    res = db.update(query)
+    print(res)
     print("Added SPIN rule for inferring the constructors of drivers")
 
 
