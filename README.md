@@ -33,6 +33,15 @@ python manage.py runserver
 
 7. Aplicação estará disponível no link [http://localhost:8000/](http://localhost:8000/).
 
+## Ficheiros
+
+Os ficheiros que contém os dados semânticos encontram-se no diretório `./WS_2_Proj_107969_108840_109018/src/semantic_data`, estão lá presentes 3 ficheiros:
+- `f1_data.n3`, contém os dados do dataset no formato **N3**;
+- `f1_ontology.n3`, contém a ontologia definida;
+- `f1_data_ontology.n3`, contém a ontologia definida e os dados em formato N3, tudo no mesmo ficheiro.
+
+As regras de inferência SPIN encontram-se no ficheiro `./WS_2_Proj_107969_108840_109018/src/f1-djangoApp/f1App/inference_rules.py`.
+
 ## Autores
 
 - [João Andrade](https://github.com/WildBunnie)

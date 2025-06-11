@@ -20,6 +20,7 @@ python-slugify==8.0.4
 PyYAML==6.0.2
 rdflib==7.1.4
 requests==2.32.3
+pandas==2.3.0
 rich==14.0.0
 s4api==1.1.0
 six==1.17.0
